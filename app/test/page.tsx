@@ -5,8 +5,7 @@ import { getRedditData } from "@/lib/api/getRedditData";
 import { getTwitchData } from "@/lib/api/getTwitchData";
 // import { getTwitterData } from "@/lib/api/getTwitterData";
 import { getYoutubeData } from "@/lib/api/getYoutubeData";
-import { buildAuthorizeUrl } from "@/lib/utils/twitter-oauth";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TwitterUserData {
   user: {
@@ -55,9 +54,17 @@ const TestPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
+    const authParam = params.get("auth");
 
     if (errorParam) {
       setError(`Authentication error: ${errorParam}`);
+      setLoading(false);
+    } else if (authParam === "success") {
+      // OAuth successful, enable the fetch button
+      setIsAuthenticated(true);
+      setLoading(false);
+      // Clean up URL
+      window.history.replaceState({}, "", "/test");
     }
   }, []);
 
@@ -106,30 +113,16 @@ const TestPage = () => {
 
   /**
    * STEP 1: Initiate OAuth 2.0 with PKCE
-   * Construct authorize URL and redirect to Twitter
+   * Redirect to server endpoint that handles PKCE generation
    */
-  const handleConnectTwitter = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      console.log("OAuth 2.0 with PKCE flow initiated");
+  const handleConnectTwitter = () => {
+    setLoading(true);
+    setError(null);
+    console.log("OAuth 2.0 flow initiated");
 
-      // Build the authorization URL with PKCE parameters
-      const { url, codeVerifier, state } = await buildAuthorizeUrl();
-
-      // Store PKCE parameters in cookies for the callback
-      document.cookie = `twitter_code_verifier=${codeVerifier}; path=/; max-age=600; SameSite=Lax`;
-      document.cookie = `twitter_state=${state}; path=/; max-age=600; SameSite=Lax`;
-
-      console.log("Redirecting to Twitter authorize URL...");
-
-      // STEP 2: Redirect to Twitter's OAuth authorize endpoint
-      window.location.href = url;
-    } catch (error) {
-      console.error("Error initiating OAuth flow:", error);
-      setError(String(error));
-      setLoading(false);
-    }
+    // Redirect to server endpoint that generates PKCE parameters
+    // and redirects to X authorize URL
+    window.location.href = "/api/auth/twitter/authorize";
   };
 
   /**

@@ -1,3 +1,4 @@
+"use server";
 /**
  * PKCE (Proof Key for Code Exchange) utility functions for OAuth 2.0
  */
@@ -5,7 +6,7 @@
 /**
  * Generate a random code verifier (43-128 characters)
  */
-export function generateCodeVerifier(): string {
+export async function generateCodeVerifier(): Promise<string> {
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
   return base64UrlEncode(array);
@@ -32,7 +33,7 @@ function base64UrlEncode(array: Uint8Array): string {
 /**
  * Generate random state parameter for CSRF protection
  */
-export function generateState(): string {
+export async function generateState(): Promise<string> {
   const array = new Uint8Array(16);
   crypto.getRandomValues(array);
   return base64UrlEncode(array);

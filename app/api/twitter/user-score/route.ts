@@ -3,7 +3,7 @@ import { fetchUserProfile, fetchUserTweets } from "@/lib/utils/twitter-oauth";
 import {
   calculateTwitterScore,
   parseUserMetrics,
-  parseTweetMetrics
+  parseTweetMetrics,
 } from "@/lib/utils/twitter-scoring";
 
 export async function GET(request: NextRequest) {
@@ -22,6 +22,8 @@ export async function GET(request: NextRequest) {
     const userProfileResponse = await fetchUserProfile(accessToken);
     const userData = userProfileResponse.data;
 
+    console.log("Fetched user profile:", userData);
+
     if (!userData) {
       return NextResponse.json(
         { error: "Failed to fetch user profile" },
@@ -30,11 +32,14 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch user tweets
-    const tweetsResponse = await fetchUserTweets(accessToken, userData.id);
+    // const tweetsResponse = await fetchUserTweets(accessToken, userData.id);
+
+    // console.log("Fetched user tweets:", tweetsResponse);
 
     // Parse metrics
     const userMetrics = parseUserMetrics(userData);
-    const tweetMetrics = parseTweetMetrics(tweetsResponse);
+    // const tweetMetrics = parseTweetMetrics(tweetsResponse);
+    const tweetMetrics: [] = []; // Temporarily disabled tweet metrics parsing
 
     // Calculate score
     const scoringResult = calculateTwitterScore(userMetrics, tweetMetrics);
@@ -48,19 +53,16 @@ export async function GET(request: NextRequest) {
         profileImageUrl: userData.profile_image_url,
         description: userData.description,
         verified: userData.verified,
-        metrics: userMetrics
+        metrics: userMetrics,
       },
       tweets: {
         count: tweetMetrics.length,
-        metrics: tweetMetrics
+        metrics: tweetMetrics,
       },
-      score: scoringResult
+      score: scoringResult,
     });
   } catch (error) {
     console.error("Error fetching user score:", error);
-    return NextResponse.json(
-      { error: String(error) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

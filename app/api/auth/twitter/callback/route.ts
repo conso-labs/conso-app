@@ -29,12 +29,16 @@ export async function GET(request: NextRequest) {
 
   try {
     // Retrieve code_verifier from session/cookie (stored during authorization)
-    // For simplicity, we'll pass it through the redirect URL
-    // In production, use secure session storage
     const codeVerifier = request.cookies.get("twitter_code_verifier")?.value;
     const storedState = request.cookies.get("twitter_state")?.value;
 
+    console.log("Retrieved from cookies:", {
+      hasCodeVerifier: !!codeVerifier,
+      hasStoredState: !!storedState,
+    });
+
     if (!codeVerifier || !storedState) {
+      console.error("Missing PKCE parameters from cookies");
       return NextResponse.redirect(
         new URL("/test?error=missing_verifier_or_state", request.url)
       );
@@ -42,16 +46,23 @@ export async function GET(request: NextRequest) {
 
     // Verify state matches (CSRF protection)
     if (state !== storedState) {
+      console.error("State mismatch:", { received: state, stored: storedState });
       return NextResponse.redirect(
         new URL("/test?error=state_mismatch", request.url)
       );
     }
 
+    console.log("Exchanging code for tokens...");
     // Exchange code for access token
     const tokenData = await exchangeCodeForToken(code, codeVerifier);
+    console.log("Token exchange successful:", {
+      hasAccessToken: !!tokenData.access_token,
+      hasRefreshToken: !!tokenData.refresh_token,
+    });
 
-    // Redirect back to test page with tokens
+    // Redirect back to test page with success indicator
     const redirectUrl = new URL("/test", request.url);
+    redirectUrl.searchParams.set("auth", "success");
 
     // Store tokens in cookies (in production, use secure HTTP-only cookies)
     const response = NextResponse.redirect(redirectUrl);
