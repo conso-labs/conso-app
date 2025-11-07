@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { getDiscordData } from "@/lib/api/getDiscordData";
 import { getRedditData } from "@/lib/api/getRedditData";
 // import { getTestData } from "@/lib/api/getTestData";
 import { getTwitchData } from "@/lib/api/getTwitchData";
@@ -100,16 +101,16 @@ const TestPage = () => {
     }
   };
 
-  // const handleTwitterDataLoad = async () => {
-  //   try {
-  //     console.log("API call initiated");
+  const handleDiscordDataLoad = async () => {
+    try {
+      console.log("API call initiated");
 
-  //     const result = await getTwitterData({ username: "0xmht" });
-  //     console.log("API response:", result);
-  //   } catch (error) {
-  //     console.error("Error fetching YouTube public data:", error);
-  //   }
-  // };
+      const result = await getDiscordData({ id: "_vintron" });
+      console.log("API response:", result);
+    } catch (error) {
+      console.error("Error fetching YouTube public data:", error);
+    }
+  };
 
   /**
    * STEP 1: Initiate OAuth 2.0 with PKCE
@@ -162,6 +163,7 @@ const TestPage = () => {
         <Button onClick={handleYoutubeDataLoad}>Get Youtube Public Data</Button>
         <Button onClick={handleTwitchDataLoad}>Get Twitch Public Data</Button>
         <Button onClick={handleRedditDataLoad}>Get Reddit Public Data</Button>
+        <Button onClick={handleDiscordDataLoad}>Get Discord Public Data</Button>
         {/* <Button onClick={handleTwitterDataLoad}>
           Get Twitter Public Data
         </Button> */}

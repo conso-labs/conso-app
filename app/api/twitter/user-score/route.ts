@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchUserProfile, fetchUserTweets } from "@/lib/utils/twitter-oauth";
+import {
+  fetchUserProfile,
+  fetchUserProfileByUsername,
+  fetchUserTweets,
+} from "@/lib/utils/twitter-oauth";
 import {
   calculateTwitterScore,
   parseUserMetrics,
@@ -20,6 +24,10 @@ export async function GET(request: NextRequest) {
 
     // Fetch user profile
     const userProfileResponse = await fetchUserProfile(accessToken);
+    // const userProfileResponse = await fetchUserProfileByUsername(
+    //   accessToken,
+    //   "@0xmht"
+    // );
     const userData = userProfileResponse.data;
 
     console.log("Fetched user profile:", userData);
@@ -33,7 +41,6 @@ export async function GET(request: NextRequest) {
 
     // Fetch user tweets
     // const tweetsResponse = await fetchUserTweets(accessToken, userData.id);
-
     // console.log("Fetched user tweets:", tweetsResponse);
 
     // Parse metrics

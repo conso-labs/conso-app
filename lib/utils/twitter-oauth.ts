@@ -108,6 +108,36 @@ export async function fetchUserProfile(accessToken: string): Promise<any> {
 }
 
 /**
+ * Fetch any user's profile by their Twitter handle/username
+ * @param accessToken - OAuth access token
+ * @param username - Twitter handle without the @ symbol (e.g., "elonmusk")
+ */
+export async function fetchUserProfileByUsername(
+  accessToken: string,
+  username: string
+): Promise<any> {
+  // Remove @ symbol if present
+  const cleanUsername = username.replace(/^@/, "");
+
+  const url = `https://api.twitter.com/2/users/by/username/${cleanUsername}?user.fields=created_at,description,public_metrics,verified,profile_image_url`;
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(
+      `Failed to fetch user profile for @${cleanUsername}: ${error}`
+    );
+  }
+
+  return response.json();
+}
+
+/**
  * Fetch user's recent tweets with engagement metrics
  */
 export async function fetchUserTweets(
@@ -115,12 +145,15 @@ export async function fetchUserTweets(
   userId: string
 ): Promise<any> {
   const url = `https://api.twitter.com/2/users/${userId}/tweets?max_results=100&tweet.fields=created_at,public_metrics,referenced_tweets&expansions=referenced_tweets.id`;
+  // const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 
   const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
+  console.log("Fetch user tweets response status:", response.status);
 
   if (!response.ok) {
     const error = await response.text();
