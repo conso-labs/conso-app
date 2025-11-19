@@ -31,7 +31,7 @@ const ConsoButton: React.FC<ConsoButtonProps> = ({
         "flex items-center gap-3 px-6 py-3 rounded-2xl transition-all duration-150",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         variant === "default" &&
-          "bg-white border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px)] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px]",
+          "bg-white border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]  hover:translate-y-[-2px)] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px]",
         variant === "outlined" &&
           "bg-transparent border-2 border-gray-300 shadow-sm",
         className
@@ -53,10 +53,7 @@ const ConsoButton: React.FC<ConsoButtonProps> = ({
         </div>
       )}
       <span
-        className={cn(
-          "font-semibold text-base text-gray-800",
-          textClassName
-        )}
+        className={cn("font-semibold text-base text-gray-800", textClassName)}
       >
         {text}
       </span>

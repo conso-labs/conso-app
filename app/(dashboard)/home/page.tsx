@@ -35,9 +35,11 @@ const App = () => {
   const handleCalculatorClick = () => {
     console.log("Calculator clicked");
   };
+
   return (
     <div className="relative">
       <HomepageBackground />
+
       <div
         className="fixed top-1/2 left-63/100 -translate-x-1/2 -translate-y-1/2 z-20"
         onClick={handleConsoClanClick}
