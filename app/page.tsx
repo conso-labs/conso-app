@@ -6,6 +6,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { solway, inter } from "./layout";
+import HeadingText from "@/components/common/HeadingText";
+import Text from "@/components/common/Text";
 
 export default function Home() {
   return (
@@ -131,13 +134,12 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-10 container mx-auto px-6 pt-24 pb-16 text-center">
-          <h1 className="text-6xl md:text-7xl font-bold text-[#1e3a5f] mb-6 drop-shadow-sm">
-            Consumer Info-Fi Layer
-          </h1>
-          <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Consumer info-fi simplifies to get started. Extra layer of bits
-            nails Sats more blah Lorem Ispum bananas blubboon blah
-          </p>
+          <HeadingText text="Consumer Info-Fi Layer" className="text-7xl" />
+
+          <Text
+            text="Consumer info-fi simplifies to get started. Extra layer of bits nails Sats more blah Lorem Ispum bananas blubboon blah"
+            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8"
+          />
           <div className="flex items-center justify-center gap-4">
             <Button
               variant="outline"
