@@ -2,17 +2,17 @@
 
 import BadgesBackground from "@/components/backgrounds/BadgesBackground";
 
-const ZapboardPage = () => {
+const ProfilePage = () => {
   return (
     <div className="relative">
       <BadgesBackground />
 
       {/* Add your badges page content here */}
       <div className="flex items-center justify-center min-h-screen">
-        <h1 className="text-4xl font-bold">Zapboard Page</h1>
+        <h1 className="text-4xl font-bold">Profile Page</h1>
       </div>
     </div>
   );
 };
 
-export default ZapboardPage;
+export default ProfilePage;

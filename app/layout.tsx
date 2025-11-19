@@ -8,7 +8,7 @@ export const solway = Solway({
 });
 
 export const inter = Inter({
-  weight: "500",
+  weight: ["500", "700"],
   variable: "--font-inter",
 });
 

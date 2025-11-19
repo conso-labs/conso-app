@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { inter } from "@/app/layout";
 
 interface NavigationItem {
   icon: React.ReactNode | string;
@@ -19,7 +20,9 @@ interface NavigationMenuProps {
   user?: {
     avatar: string;
     name: string;
-    shareLink?: string;
+    isActive?: boolean;
+    onClick?: () => void;
+    // shareLink?: string;
   };
 }
 
@@ -31,7 +34,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-col justify-between bg-white rounded-3xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 w-[220px] h-[calc(100vh-3rem)]",
+        "flex flex-col justify-between bg-white rounded-3xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 w-[230px] h-[calc(100vh-8rem)]",
         className
       )}
     >
@@ -47,7 +50,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
               "relative",
               item.isActive
                 ? "bg-[#F5E6D3] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                : "hover:bg-[#F5E6D3] hover:border-2 hover:border-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:bg-[#F5E6D3] active:border-2 active:border-black active:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]",
+                : "bg-white border-2 border-gray-300 hover:bg-[#F5E6D3] hover:border-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:bg-[#F5E6D3] active:border-black active:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]",
               "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
             )}
           >
@@ -67,13 +70,23 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
             </div>
 
             {/* Label */}
-            <span className="font-semibold text-base text-gray-900 flex-1">
+            <span
+              className={cn(
+                " text-base text-gray-900 flex-1 font-inter",
+                inter.className
+              )}
+            >
               {item.label}
             </span>
 
             {/* Badge */}
             {item.badge && (
-              <span className="px-2 py-0.5 bg-orange-100 border border-orange-300 rounded-full text-xs font-semibold text-orange-700">
+              <span
+                className={cn(
+                  "px-2 py-0.5 bg-orange-100 border border-orange-300 rounded-full text-xs font-semibold text-orange-700",
+                  inter.className
+                )}
+              >
                 {item.badge}
               </span>
             )}
@@ -113,25 +126,35 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
           </button> */}
 
             {/* User Profile Card */}
-            <div className="bg-white border-2 border-black rounded-2xl p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="flex items-center gap-3 mb-2">
-                <Image
-                  src={user.avatar}
-                  alt={user.name}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 rounded-full border-2 border-black"
-                />
-                <span className="font-bold text-base text-gray-900">
-                  {user.name}
-                </span>
-              </div>
-              {/* {user.shareLink && (
+
+            <button
+              // className="flex items-center gap-3 mb-2"
+              onClick={user.onClick}
+              className={cn(
+                "bg-white border-2 border-black rounded-2xl p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex justify-center items-center gap-2 w-full",
+                "relative",
+                user.isActive
+                  ? "bg-[#F5E6D3] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                  : "hover:bg-[#F5E6D3] hover:border-2 hover:border-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:bg-[#F5E6D3] active:border-2 active:border-black active:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]",
+                "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+              )}
+            >
+              <Image
+                src={user.avatar}
+                alt={user.name}
+                width={48}
+                height={48}
+                className="w-12 h-12 rounded-full border-2 border-black"
+              />
+              <span className="font-bold text-base text-gray-900">
+                {user.name}
+              </span>
+            </button>
+            {/* {user.shareLink && (
               <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 underline">
                 {user.shareLink}
               </button>
             )} */}
-            </div>
           </div>
         </>
       )}

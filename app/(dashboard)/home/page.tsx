@@ -3,7 +3,7 @@
 import HomepageBackground from "@/components/backgrounds/Homepage";
 import Image from "next/image";
 
-const App = () => {
+const HomePage = () => {
   const handleConsoClanClick = () => {
     console.log("Conso Clan clicked");
   };
@@ -47,20 +47,20 @@ const App = () => {
         <Image
           src="/images/svgs/homepage/conso-clan.svg"
           alt="Conso Clan"
-          width={280}
+          width={250}
           height={280}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
       </div>
 
       <div
-        className="fixed top-32/100 left-18/100 -translate-y-1/2 z-10"
+        className="fixed top-32/100 left-21/100 -translate-y-1/2 z-10"
         onClick={handleSocialZoneClick}
       >
         <Image
           src="/images/svgs/homepage/social-zone.svg"
           alt="Social Zone"
-          width={450}
+          width={400}
           height={400}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
@@ -68,13 +68,13 @@ const App = () => {
 
       {/* Creative Zone - Top right */}
       <div
-        className="fixed top-31/100 right-0/100 -translate-y-1/2 z-10"
+        className="fixed top-33/100 right-0/100 -translate-y-1/2 z-10"
         onClick={handleCreativeZoneClick}
       >
         <Image
           src="/images/svgs/homepage/creative-zone.svg"
           alt="Creative Zone"
-          width={399}
+          width={370}
           height={380}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
@@ -88,7 +88,7 @@ const App = () => {
         <Image
           src="/images/svgs/homepage/gaming-zone.svg"
           alt="Gaming Zone"
-          width={428}
+          width={400}
           height={285}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
@@ -96,13 +96,13 @@ const App = () => {
 
       {/* Campaigns - Bottom right corner */}
       <div
-        className="fixed bottom-15/100 right-0/100 translate-y-1/2 z-10"
+        className="fixed bottom-15/100 right-2/100 translate-y-1/2 z-10"
         onClick={handleCampaignsClick}
       >
         <Image
           src="/images/svgs/homepage/campaigns.svg"
           alt="Campaigns"
-          width={263}
+          width={233}
           height={226}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
@@ -110,13 +110,13 @@ const App = () => {
 
       {/* Zaps - Bottom left */}
       <div
-        className="fixed bottom-32/100 left-15/100 translate-y-1/2 z-10"
+        className="fixed bottom-30/100 left-18/100 translate-y-1/2 z-10"
         onClick={handleZapsClick}
       >
         <Image
           src="/images/svgs/homepage/zaps.svg"
           alt="Zaps"
-          width={346}
+          width={310}
           height={377}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
@@ -138,13 +138,13 @@ const App = () => {
 
       {/* Calculator - Top right corner */}
       <div
-        className="fixed top-12/100 right-6/100 -translate-y-1/2 z-10"
+        className="fixed top-15/100 right-6/100 -translate-y-1/2 z-10"
         onClick={handleCalculatorClick}
       >
         <Image
           src="/images/svgs/homepage/calculator.svg"
           alt="Calculator"
-          width={121}
+          width={100}
           height={120}
           className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(139,92,246,0.6)]"
         />
@@ -153,4 +153,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default HomePage;
