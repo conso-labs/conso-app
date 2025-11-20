@@ -34,7 +34,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-col justify-between bg-white rounded-3xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 w-[230px] h-[calc(100vh-8rem)]",
+        "flex flex-col justify-between bg-white rounded-3xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 w-[16vw] h-[calc(100vh-8rem)]",
         className
       )}
     >
@@ -103,27 +103,27 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
           <div className="flex flex-col gap-2">
             {/* Passport Button */}
             {/* <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-100 active:bg-gray-200 transition-all duration-150 text-left">
-            <div className="flex items-center justify-center w-6 h-6">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-            </div>
-            <span className="font-semibold text-base text-gray-900">
-              Passport
-            </span>
-          </button> */}
+        <div className="flex items-center justify-center w-6 h-6">
+          <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+        </div>
+        <span className="font-semibold text-base text-gray-900">
+          Passport
+        </span>
+        </button> */}
 
             {/* User Profile Card */}
 
@@ -151,10 +151,10 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
               </span>
             </button>
             {/* {user.shareLink && (
-              <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 underline">
-                {user.shareLink}
-              </button>
-            )} */}
+          <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 underline">
+          {user.shareLink}
+          </button>
+        )} */}
           </div>
         </>
       )}

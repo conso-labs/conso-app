@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import NavigationMenu from "@/components/navigation/NavigationMenu";
 import {
@@ -12,6 +13,8 @@ import {
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { inter, solway } from "../layout";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
+import AssetLoader from "@/components/loaders/AssetLoader";
 
 export default function DashboardLayout({
   children,
@@ -20,6 +23,47 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const [isReady, setIsReady] = useState(false);
+
+  // Centralized list of ALL assets used across the entire dashboard
+  const allAssets = [
+    // Top bar icons
+    "/images/icons/conso.svg",
+    "/images/icons/zaps.svg",
+    "/images/icons/badges.svg",
+    "/images/icons/stats.svg",
+    // Profile avatar
+    "/images/pngs/profile.png",
+    // Homepage assets
+    "/images/svgs/homepage/bg.svg",
+    "/images/svgs/homepage/scene.svg",
+    "/images/svgs/homepage/conso-clan.svg",
+    "/images/svgs/homepage/social-zone.svg",
+    "/images/svgs/homepage/creative-zone.svg",
+    "/images/svgs/homepage/gaming-zone.svg",
+    "/images/svgs/homepage/campaigns.svg",
+    "/images/svgs/homepage/zaps.svg",
+    "/images/svgs/homepage/ship.svg",
+    "/images/svgs/homepage/calculator.svg",
+  ];
+
+  const { loading, loadedCount, progress } = useImagePreloader({
+    images: allAssets,
+    onLoadComplete: () => {
+      setTimeout(() => setIsReady(true), 300);
+    },
+  });
+
+  // Show loader only once when the app first loads
+  if (loading || !isReady) {
+    return (
+      <AssetLoader
+        progress={progress}
+        loadedCount={loadedCount}
+        totalImages={allAssets.length}
+      />
+    );
+  }
 
   const navigationItems = [
     {
@@ -151,7 +195,7 @@ export default function DashboardLayout({
       </div>
 
       {/* Page Content */}
-      <div className="pt-20 px-6">{children}</div>
+      <div className="pt-20 pl-[calc(16vw+4rem)] pr-6">{children}</div>
     </div>
   );
 }
