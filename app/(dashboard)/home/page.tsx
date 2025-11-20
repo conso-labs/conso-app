@@ -2,38 +2,48 @@
 
 import HomepageBackground from "@/components/backgrounds/Homepage";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
+  const router = useRouter();
   const handleConsoClanClick = () => {
     console.log("Conso Clan clicked");
+    router.push("/home");
   };
 
   const handleSocialZoneClick = () => {
     console.log("Social Zone clicked");
+    router.push("/badges?activeZone=social");
   };
 
   const handleCreativeZoneClick = () => {
     console.log("Creative Zone clicked");
+    router.push("/badges?activeZone=creative");
   };
 
   const handleGamingZoneClick = () => {
     console.log("Gaming Zone clicked");
+    router.push("/badges?activeZone=gaming");
   };
 
   const handleCampaignsClick = () => {
     console.log("Campaigns clicked");
+    // coming soon
   };
 
   const handleZapsClick = () => {
     console.log("Zaps clicked");
+    router.push("/zapboard");
   };
 
   const handleShipClick = () => {
     console.log("Ship clicked");
+    // coming soon
   };
 
   const handleCalculatorClick = () => {
     console.log("Calculator clicked");
+    // coming soon
   };
 
   return (

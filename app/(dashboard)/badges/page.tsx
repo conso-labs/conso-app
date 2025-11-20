@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import BadgesBackground from "@/components/backgrounds/Badges";
 import ZoneTab from "@/components/badges/ZoneTab";
 import BadgeSection from "@/components/badges/BadgeSection";
@@ -19,7 +20,16 @@ import {
 type Zone = "social" | "gaming" | "creative" | "onchain";
 
 const BadgesPage = () => {
-  const [activeZone, setActiveZone] = useState<Zone>("social");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const zoneParam = searchParams.get("activeZone") as Zone | null;
+
+  const [activeZone, setActiveZone] = useState<Zone>(() => {
+    if (zoneParam && ["social", "gaming", "creative", "onchain"].includes(zoneParam)) {
+      return zoneParam;
+    }
+    return "social";
+  });
 
   const socialBadges = [
     {
@@ -191,6 +201,11 @@ const BadgesPage = () => {
     },
   ];
 
+  const handleZoneChange = (zone: Zone) => {
+    setActiveZone(zone);
+    router.push(`/badges?activeZone=${zone}`);
+  };
+
   return (
     <div className="relative min-h-screen">
       <BadgesBackground />
@@ -201,22 +216,22 @@ const BadgesPage = () => {
           <ZoneTab
             label="Social Zone"
             isActive={activeZone === "social"}
-            onClick={() => setActiveZone("social")}
+            onClick={() => handleZoneChange("social")}
           />
           <ZoneTab
             label="Gaming Zone"
             isActive={activeZone === "gaming"}
-            onClick={() => setActiveZone("gaming")}
+            onClick={() => handleZoneChange("gaming")}
           />
           <ZoneTab
             label="Creative Zone"
             isActive={activeZone === "creative"}
-            onClick={() => setActiveZone("creative")}
+            onClick={() => handleZoneChange("creative")}
           />
           <ZoneTab
             label="Onchain Zone"
             isActive={activeZone === "onchain"}
-            onClick={() => setActiveZone("onchain")}
+            onClick={() => handleZoneChange("onchain")}
           />
         </div>
 
