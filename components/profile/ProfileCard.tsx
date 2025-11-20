@@ -85,76 +85,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         {/* Central Platform Icons Ellipse - Takes remaining space */}
         <div className="relative flex-1 flex items-center justify-center">
-          <div className="relative w-full h-full max-w-4xl">
-            {/* Platform Icons */}
-            {platforms.map((platform, index) => {
-              const position = iconPositions[index];
-              return (
-                <div
-                  key={platform.name}
-                  className="absolute transition-all duration-300 hover:scale-110 hover:z-20"
-                  style={{
-                    left: `${position.x}%`,
-                    top: `${position.y}%`,
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  <div
-                    className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center border-3 border-yellow-400 shadow-lg backdrop-blur-sm",
-                      platform.bgColor
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "text-xl",
-                        platform.iconColor || "text-white"
-                      )}
-                    >
-                      {platform.icon}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* SVG for connecting lines */}
-            <svg
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              style={{ left: 0, top: 0 }}
-            >
-              {iconPositions.map((pos, index) => (
-                <line
-                  key={index}
-                  x1="50%"
-                  y1="50%"
-                  x2={`${pos.x}%`}
-                  y2={`${pos.y}%`}
-                  stroke="rgba(255, 255, 255, 0.2)"
-                  strokeWidth="2"
-                  strokeDasharray="6 6"
-                  vectorEffect="non-scaling-stroke"
-                />
-              ))}
-            </svg>
-
-            {/* Center User Avatar */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              <div className="relative">
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-purple-300 rounded-3xl blur-2xl opacity-60 scale-110" />
-
-                {/* Avatar */}
-                <Image
-                  src={user.avatar}
-                  alt={user.name}
-                  width={160}
-                  height={160}
-                  className="relative w-40 h-40 rounded-3xl border-4 border-yellow-400 shadow-2xl"
-                />
-              </div>
-            </div>
-          </div>
+          <div className="relative w-full h-full max-w-4xl"></div>
         </div>
 
         {/* Zaps Counter */}

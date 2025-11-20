@@ -1,5 +1,8 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
+import PlatformModal from "./PlatformModal";
 
 interface BadgeCardProps {
   icon: React.ReactNode;
@@ -7,9 +10,15 @@ interface BadgeCardProps {
   description: string;
   zapReward: number;
   onConnect?: () => void;
+  onUpdate?: () => void;
   isConnected?: boolean;
   backgroundColor?: string;
   className?: string;
+  platformDetails?: {
+    time: string;
+    price: string;
+    type: string;
+  };
 }
 
 const BadgeCard: React.FC<BadgeCardProps> = ({
@@ -18,20 +27,43 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
   description,
   zapReward,
   onConnect,
+  onUpdate,
   isConnected = false,
   backgroundColor = "bg-[#E6D5F5]",
   className,
+  platformDetails = {
+    time: "15 Sec",
+    price: "Free",
+    type: "Secure Oauth",
+  },
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleConnectClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalConnect = () => {
+    onConnect?.();
+    setIsModalOpen(false);
+  };
+
+  const handleModalUpdate = () => {
+    onUpdate?.();
+    setIsModalOpen(false);
+  };
+
   return (
-    <div
-      className={cn(
-        "relative rounded-2xl border-3 border-black p-6 transition-all duration-200",
-        "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
-        "hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ",
-        backgroundColor,
-        className
-      )}
-    >
+    <>
+      <div
+        className={cn(
+          "relative rounded-2xl border-3 border-black p-6 transition-all duration-200",
+          "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+          "hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ",
+          backgroundColor,
+          className
+        )}
+      >
       {/* Zap Reward Badge */}
       <div className="absolute top-4 right-4 bg-black text-white px-3 py-1 rounded-full flex items-center gap-1">
         <span className="text-yellow-400">⚡</span>
@@ -54,20 +86,36 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
       <div className="h-16" />
 
       {/* Connect Button anchored to bottom of the card */}
-      <button
-        onClick={onConnect}
-        disabled={isConnected}
-        className={cn(
-          "absolute left-6 right-6 bottom-6 z-10 py-3 rounded-xl font-semibold text-base transition-all duration-200",
-          "border-3 border-black",
-          isConnected
-            ? "bg-green-300 text-gray-600 cursor-not-allowed"
-            : "bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
-        )}
-      >
-        {isConnected ? "Connected" : "Connect"}
-      </button>
-    </div>
+        <button
+          onClick={handleConnectClick}
+          className={cn(
+            "absolute left-6 right-6 bottom-6 z-10 py-3 rounded-xl font-semibold text-base transition-all duration-200",
+            "border-3 border-black",
+            isConnected
+              ? "bg-green-300 text-gray-600"
+              : "bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+          )}
+        >
+          {isConnected ? "Connected" : "Connect"}
+        </button>
+      </div>
+
+      <PlatformModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        platform={{
+          name: title,
+          icon: icon,
+          description: description,
+          time: platformDetails.time,
+          price: platformDetails.price,
+          type: platformDetails.type,
+        }}
+        isConnected={isConnected}
+        onConnect={handleModalConnect}
+        onUpdate={handleModalUpdate}
+      />
+    </>
   );
 };
 
