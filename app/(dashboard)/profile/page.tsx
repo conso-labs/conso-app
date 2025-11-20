@@ -20,10 +20,10 @@ const ProfilePage = () => {
   ];
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative overflow-hidden">
       <BadgesBackground />
 
-      <div className="relative z-10 max-w-4xl mx-auto py-8">
+      <div className="fixed left-1/2 -translate-x-1/3 z-10 max-w-4xl w-full py-8">
         <div className="h-140">
           <ProfileCard
             user={{
@@ -43,7 +43,11 @@ const ProfilePage = () => {
             text="Mint Onchain"
             className="bg-orange-300 text-black"
           />
-          <ConsoButton text="Share on 𝕏" className="bg-white text-black" />
+          <ConsoButton
+            disabled
+            text="Share on 𝕏"
+            className="bg-white text-black"
+          />
         </div>
       </div>
     </div>
