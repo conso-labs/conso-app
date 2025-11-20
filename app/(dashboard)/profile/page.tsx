@@ -10,9 +10,13 @@ const ProfilePage = () => {
     { name: "X", icon: "𝕏", bgColor: "bg-gray-900" },
     { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
     { name: "Slush", icon: "🧊", bgColor: "bg-blue-400" },
+    { name: "X", icon: "𝕏", bgColor: "bg-gray-900" },
     { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
-    { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
-    { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
+    { name: "Slush", icon: "🧊", bgColor: "bg-blue-400" },
+
+    // { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
+    // { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
+    // { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
   ];
 
   return (
