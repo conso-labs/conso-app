@@ -288,6 +288,7 @@ const PlatformModal: React.FC<PlatformModalProps> = ({
               " items-center justify-center",
               isConnected ? "bg-gray-100" : "bg-yellow-400"
             )}
+            logo={isConnected && "/images/icons/refresh.svg"}
           />
         </div>
       </div>

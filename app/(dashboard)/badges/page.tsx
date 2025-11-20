@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BadgesBackground from "@/components/backgrounds/Badges";
 import ZoneTab from "@/components/badges/ZoneTab";
@@ -15,6 +15,23 @@ import {
   InstagramIcon,
   DiscordIcon,
   TelegramIcon,
+  PlaystationIcon,
+  XboxIcon,
+  SteamIcon,
+  GooglePlayIcon,
+  RobloxIcon,
+  ChessIcon,
+  EpicGamesIcon,
+  RetroachievementsIcon,
+  GithubIcon,
+  SpotifyIcon,
+  MediumIcon,
+  SubstackIcon,
+  SuiNSIcon,
+  SlushIcon,
+  SuiPlayIcon,
+  SuiPassportIcon,
+  ClaynosaurzIcon,
 } from "@/components/badges/icons";
 
 type Zone = "social" | "gaming" | "creative" | "onchain";
@@ -25,7 +42,10 @@ const BadgesPage = () => {
   const zoneParam = searchParams.get("activeZone") as Zone | null;
 
   const [activeZone, setActiveZone] = useState<Zone>(() => {
-    if (zoneParam && ["social", "gaming", "creative", "onchain"].includes(zoneParam)) {
+    if (
+      zoneParam &&
+      ["social", "gaming", "creative", "onchain"].includes(zoneParam)
+    ) {
       return zoneParam;
     }
     return "social";
@@ -40,6 +60,7 @@ const BadgesPage = () => {
         "Connect your channel to highlight videos, playlists, and subs.",
       zapReward: 10000,
       backgroundColor: "bg-[#E6D5F5]",
+      disabled: false,
     },
     {
       id: "twitch",
@@ -49,6 +70,7 @@ const BadgesPage = () => {
         "Verify your Twitch account to display streams and viewer stats.",
       zapReward: 10000,
       backgroundColor: "bg-[#F5C6D5]",
+      disabled: false,
     },
     {
       id: "x",
@@ -58,32 +80,7 @@ const BadgesPage = () => {
         "Link your X profile to showcase posts, follower and engagement.",
       zapReward: 10000,
       backgroundColor: "bg-[#F5E6C6]",
-    },
-    {
-      id: "reddit",
-      icon: <RedditIcon />,
-      title: "Reddit",
-      description:
-        "Verify your Reddit account to display karma and community activity.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
-    },
-    {
-      id: "farcaster",
-      icon: <FarcasterIcon />,
-      title: "Farcaster",
-      description: "Verify your Farcaster account to showcase pages and posts.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-    },
-    {
-      id: "instagram",
-      icon: <InstagramIcon />,
-      title: "Instagram",
-      description:
-        "Link your Instagram to highlight reels, posts, and followers.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#C6E5F5]",
+      disabled: false,
     },
     {
       id: "discord",
@@ -95,6 +92,36 @@ const BadgesPage = () => {
       backgroundColor: "bg-[#E6C6F5]",
     },
     {
+      id: "reddit",
+      icon: <RedditIcon />,
+      title: "Reddit",
+      description:
+        "Verify your Reddit account to display karma and community activity.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#E6F5D5]",
+      disabled: false,
+    },
+    {
+      id: "farcaster",
+      icon: <FarcasterIcon />,
+      title: "Farcaster",
+      description: "Verify your Farcaster account to showcase pages and posts.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5E6C6]",
+      disabled: true,
+    },
+    {
+      id: "instagram",
+      icon: <InstagramIcon />,
+      title: "Instagram",
+      description:
+        "Link your Instagram to highlight reels, posts, and followers.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#C6E5F5]",
+      disabled: true,
+    },
+
+    {
       id: "telegram",
       icon: <TelegramIcon />,
       title: "Telegram",
@@ -102,102 +129,185 @@ const BadgesPage = () => {
         "Verify your Telegram account ownership for professional identity.",
       zapReward: 10000,
       backgroundColor: "bg-[#D5E6F5]",
+      disabled: true,
     },
   ];
 
   const gamingBadges = [
     {
-      id: "youtube",
-      icon: <YouTubeIcon />,
-      title: "YouTube",
+      id: "playstation",
+      icon: <PlaystationIcon />,
+      title: "PlayStation",
       description:
-        "Connect your channel to highlight videos, playlists, and subs.",
+        "Connect your PSN account to showcase trophies and gameplay stats.",
       zapReward: 10000,
       backgroundColor: "bg-[#E6D5F5]",
+      disabled: false,
     },
     {
-      id: "twitch",
-      icon: <TwitchIcon />,
-      title: "Twitch",
+      id: "roblox",
+      icon: <RobloxIcon />,
+      title: "Roblox",
       description:
-        "Verify your Twitch account to display streams and viewer stats.",
+        "Verify your Roblox account to display creations, badges, and game activity.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5E6C6]",
+      disabled: false,
+    },
+
+    {
+      id: "steam",
+      icon: <SteamIcon />,
+      title: "Steam",
+      description: "Link your Steam ID to track games, playtime, and badges.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5E6C6]",
+      disabled: false,
+    },
+    {
+      id: "xbox",
+      icon: <XboxIcon />,
+      title: "Xbox",
+      description:
+        "Verify your Xbox Live account to sync achievements and progress.",
       zapReward: 10000,
       backgroundColor: "bg-[#F5C6D5]",
+      disabled: true,
     },
     {
-      id: "x",
-      icon: <XIcon />,
-      title: "X(formally twitter)",
+      id: "googleplay",
+      icon: <GooglePlayIcon />,
+      title: "Google Play",
       description:
-        "Link your X profile to showcase posts, follower and engagement.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-    },
-    {
-      id: "reddit",
-      icon: <RedditIcon />,
-      title: "Reddit",
-      description:
-        "Verify your Reddit account to display karma and community activity.",
+        "Connect Google Play Games for mobile achievements and leaderboards.",
       zapReward: 10000,
       backgroundColor: "bg-[#E6F5D5]",
+      disabled: true,
     },
+
     {
-      id: "farcaster",
-      icon: <FarcasterIcon />,
-      title: "Farcaster",
-      description: "Verify your Farcaster account to showcase pages and posts.",
+      id: "chess",
+      icon: <ChessIcon />,
+      title: "Chess.com",
+      description:
+        "Sync your Chess.com profile to highlight ratings and matches.",
       zapReward: 10000,
       backgroundColor: "bg-[#F5E6C6]",
+      disabled: true,
+    },
+    {
+      id: "epicgames",
+      icon: <EpicGamesIcon />,
+      title: "Epic Games",
+      description:
+        "Link your Epic account to showcase Fortnite and other Epic titles.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5E6C6]",
+      disabled: true,
+    },
+    {
+      id: "retroachievements",
+      icon: <RetroachievementsIcon />,
+      title: "RetroAchievements",
+      description: "Connect RA to feature retro game achievements.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5E6C6]",
+      disabled: true,
     },
   ];
 
   const creativeBadges = [
     {
-      id: "reddit",
-      icon: <RedditIcon />,
-      title: "Reddit",
+      id: "github",
+      icon: <GithubIcon />,
+      title: "GitHub",
       description:
-        "Verify your Reddit account to display karma and community activity.",
+        "Connect your GitHub to showcase repos, commits, and open-source work",
       zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
+      backgroundColor: "bg-[#E6D5F5]",
+      disabled: false,
     },
     {
-      id: "farcaster",
-      icon: <FarcasterIcon />,
-      title: "Farcaster",
-      description: "Verify your Farcaster account to showcase pages and posts.",
+      id: "spotify",
+      icon: <SpotifyIcon />,
+      title: "Spotify",
+      description:
+        "Link your Spotify to display playlists, favourites,and listening trends",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5C6D5]",
+      disabled: true,
+    },
+    {
+      id: "medium",
+      icon: <MediumIcon />,
+      title: "Medium",
+      description:
+        "Verify your Medium profile to highlight blogs and followers.",
       zapReward: 10000,
       backgroundColor: "bg-[#F5E6C6]",
+      disabled: true,
+    },
+    {
+      id: "substack",
+      icon: <SubstackIcon />,
+      title: "Substack",
+      description:
+        "Connect your Substack to feature newsletters and readership.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#E6F5D5]",
+      disabled: true,
     },
   ];
 
   const onchainBadges = [
     {
-      id: "x",
-      icon: <XIcon />,
-      title: "X(formally twitter)",
+      id: "suins",
+      icon: <SuiNSIcon />,
+      title: "SuiNS",
       description:
-        "Link your X profile to showcase posts, follower and engagement.",
+        "Connect your SuiNS name to showcase your blockchain identity.",
       zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
+      backgroundColor: "bg-[#E6D5F5]",
+      disabled: false,
     },
     {
-      id: "reddit",
-      icon: <RedditIcon />,
-      title: "Reddit",
+      id: "slushwallet",
+      icon: <SlushIcon />,
+      title: "Slush Wallet",
       description:
-        "Verify your Reddit account to display karma and community activity.",
+        "Link your Slush Wallet to display on-chain assets and activity.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5C6D5]",
+      disabled: false,
+    },
+    {
+      id: "suiplay",
+      icon: <SuiPlayIcon />,
+      title: "SuiPlay0x1",
+      description:
+        "Verify ownership of your SuiPlay0x1 console for gaming on Sui.",
+      zapReward: 10000,
+      backgroundColor: "bg-[#F5E6C6]",
+      disabled: true,
+    },
+    {
+      id: "suipassport",
+      icon: <SuiPassportIcon />,
+      title: "Sui Passport",
+      description:
+        "Get recognized for all your activities in the Sui ecosystem events.",
       zapReward: 10000,
       backgroundColor: "bg-[#E6F5D5]",
+      disabled: true,
     },
     {
-      id: "farcaster",
-      icon: <FarcasterIcon />,
-      title: "Farcaster",
-      description: "Verify your Farcaster account to showcase pages and posts.",
+      id: "claynosaurz",
+      icon: <ClaynosaurzIcon />,
+      title: "Claynosaurz Holder",
+      description: "Verify ownership of Claynosaurz NFT.",
       zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
+      backgroundColor: "bg-[#E6F5D5]",
+      disabled: true,
     },
   ];
 
@@ -245,6 +355,7 @@ const BadgesPage = () => {
                 title={badge.title}
                 description={badge.description}
                 zapReward={badge.zapReward}
+                isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
                 onConnect={() => console.log(`Connecting to ${badge.title}`)}
               />
@@ -261,6 +372,7 @@ const BadgesPage = () => {
                 title={badge.title}
                 description={badge.description}
                 zapReward={badge.zapReward}
+                isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
                 onConnect={() => console.log(`Connecting to ${badge.title}`)}
               />
@@ -277,6 +389,7 @@ const BadgesPage = () => {
                 title={badge.title}
                 description={badge.description}
                 zapReward={badge.zapReward}
+                isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
                 onConnect={() => console.log(`Connecting to ${badge.title}`)}
               />
@@ -293,6 +406,7 @@ const BadgesPage = () => {
                 title={badge.title}
                 description={badge.description}
                 zapReward={badge.zapReward}
+                isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
                 onConnect={() => console.log(`Connecting to ${badge.title}`)}
               />

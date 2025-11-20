@@ -20,20 +20,6 @@ const App = () => {
 
           {/* Login Buttons Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {/* Google Button */}
-            <ConsoButton
-              logo={"/images/icons/google.svg"}
-              text="Google"
-              onClick={() => console.log("Google login")}
-            />
-
-            {/* X (Twitter) Button */}
-            <ConsoButton
-              logo={"/images/icons/x.svg"}
-              text="X (formally twitter)"
-              onClick={() => console.log("X login")}
-            />
-
             {/* Slush Button */}
             <ConsoButton
               logo={"/images/icons/slush.svg"}
@@ -42,12 +28,29 @@ const App = () => {
               logoClassName="text-blue-500"
             />
 
+            {/* Google Button */}
+            <ConsoButton
+              logo={"/images/icons/google.svg"}
+              text="Google"
+              onClick={() => console.log("Google login")}
+              disabled={true}
+            />
+
+            {/* X (Twitter) Button */}
+            <ConsoButton
+              logo={"/images/icons/x.svg"}
+              text="X (formally twitter)"
+              onClick={() => console.log("X login")}
+              disabled={true}
+            />
+
             {/* Metamask Button */}
             <ConsoButton
               logo={"/images/icons/metamask.svg"}
               text="Metamask"
               onClick={() => console.log("Metamask login")}
               logoClassName="text-orange-500"
+              disabled={true}
             />
           </div>
 

@@ -17,75 +17,66 @@ const AssetLoader: React.FC<AssetLoaderProps> = ({
   totalImages,
 }) => {
   return (
-    <div className="fixed inset-0 z-[100] bg-[#1a2845] flex items-center justify-center">
+    <div className="fixed inset-0 z-100 bg-white flex items-center justify-center">
       <div className="flex flex-col items-center gap-8">
-        {/* Logo */}
-        <div className="flex items-center gap-3 animate-pulse">
-          <div className="w-16 h-16 rounded flex items-center justify-center">
+        {/* Bear Loader with Circular Progress */}
+        <div className="relative w-64 h-64 flex items-center justify-center">
+          {/* Circular Progress Background */}
+          <svg
+            className="absolute w-full h-full -rotate-90"
+            viewBox="0 0 200 200"
+          >
+            {/* Background circle (light gray) */}
+            <circle
+              cx="100"
+              cy="100"
+              r="90"
+              fill="none"
+              stroke="#d1d5db"
+              strokeWidth="12"
+              strokeLinecap="round"
+            />
+            {/* Progress circle (blue) */}
+            <circle
+              cx="100"
+              cy="100"
+              r="90"
+              fill="none"
+              stroke="#60a5fa"
+              strokeWidth="12"
+              strokeLinecap="round"
+              strokeDasharray={`${2 * Math.PI * 90}`}
+              strokeDashoffset={`${2 * Math.PI * 90 * (1 - progress / 100)}`}
+              className="transition-all duration-300 ease-out"
+            />
+          </svg>
+
+          {/* Bear Image */}
+          <div className="relative ">
             <Image
-              src="/images/icons/conso.svg"
-              alt="Logo"
-              width={64}
-              height={64}
-              className="w-16 h-16 object-contain"
+              src="/images/svgs/loader/bearloader.svg"
+              alt="Loading"
+              width={200}
+              height={200}
+              className="w-[200px] object-contain"
+              priority
             />
           </div>
-          <span
-            className={cn("text-white text-4xl font-bold", solway.className)}
-          >
-            CONSO
-          </span>
         </div>
 
-        {/* Progress Bar Container */}
-        <div className="w-80 space-y-3">
-          {/* Progress Bar */}
-          <div className="relative h-3 bg-[#2a3f5f] rounded-full overflow-hidden border-2 border-[#3a4f6f]">
-            <div
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 transition-all duration-300 ease-out rounded-full"
-              style={{ width: `${progress}%` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-shimmer" />
-            </div>
-          </div>
-
-          {/* Loading Text */}
-          <div
-            className={cn(
-              "flex items-center justify-between text-sm",
-              inter.className
-            )}
-          >
-            <span className="text-gray-400">
-              Loading assets... {loadedCount}/{totalImages}
-            </span>
-            <span className="text-yellow-400 font-bold">
-              {Math.round(progress)}%
-            </span>
-          </div>
+        {/* Loading Text */}
+        <div
+          className={cn(
+            "flex items-center justify-between text-sm gap-4",
+            inter.className
+          )}
+        >
+          <span className="text-gray-700 text-2xl">Loading assets...</span>
+          {/* <span className="text-yellow-400 font-bold text-lg">
+            {Math.round(progress)}%
+          </span> */}
         </div>
-
-        {/* Loading Spinner */}
-        {/* <div className="flex gap-2">
-          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-          <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" />
-        </div> */}
       </div>
-
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </div>
   );
 };

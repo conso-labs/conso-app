@@ -86,7 +86,7 @@ export default function DashboardLayout({
     },
     {
       icon: <MissionsIcon />,
-      label: "Missions",
+      label: "Campaigns",
       badge: "Soon",
       disabled: true,
       isActive: pathname === "/missions",

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 // Platform icon components
 const YouTubeIcon = () => (
   <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center">
@@ -94,6 +96,228 @@ const TelegramIcon = () => (
     </svg>
   </div>
 );
+
+const PlaystationIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/playstation.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const XboxIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/xbox.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SteamIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/steam.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const GooglePlayIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/googleplay.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const RobloxIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/roblox.jpg"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const ChessIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/chess.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const EpicGamesIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/epicgames.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const RetroachievementsIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/retroachievements.png"
+        alt="PlayStation Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const GithubIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/github.png"
+        alt="Github Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SpotifyIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/spotify.png"
+        alt="Spotify Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const MediumIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/medium.png"
+        alt="Medium Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SubstackIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/substack.png"
+        alt="Substack Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SuiNSIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/suins.png"
+        alt="Substack Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SlushIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/slush.png"
+        alt="Slush Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SuiPlayIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/suiplay.jpg"
+        alt="Substack Icon"
+        width={40}
+        height={40}
+      />
+    </div>
+  );
+};
+
+const SuiPassportIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/sui.png"
+        alt="Sui Passport Icon"
+        width={50}
+        height={50}
+      />
+    </div>
+  );
+};
+
+const ClaynosaurzIcon = () => {
+  return (
+    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+      <Image
+        src="/images/icons/claynosaurz.png"
+        alt="Substack Icon"
+        width={60}
+        height={60}
+      />
+    </div>
+  );
+};
+
 export {
   YouTubeIcon,
   TwitchIcon,
@@ -103,4 +327,21 @@ export {
   InstagramIcon,
   DiscordIcon,
   TelegramIcon,
+  PlaystationIcon,
+  XboxIcon,
+  SteamIcon,
+  GooglePlayIcon,
+  RobloxIcon,
+  ChessIcon,
+  EpicGamesIcon,
+  RetroachievementsIcon,
+  GithubIcon,
+  SpotifyIcon,
+  MediumIcon,
+  SubstackIcon,
+  SuiNSIcon,
+  SlushIcon,
+  SuiPlayIcon,
+  SuiPassportIcon,
+  ClaynosaurzIcon,
 };
