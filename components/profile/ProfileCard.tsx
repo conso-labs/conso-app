@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import ConsoButton from "../common/ConsoButton";
 
 interface PlatformIcon {
   name: string;
@@ -27,86 +26,518 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   platforms = [],
   className,
 }) => {
-  // Calculate positions for icons in an ellipse
-  const radiusX = 280; // Horizontal radius
-  const radiusY = 180; // Vertical radius (smaller for ellipse)
-  const centerX = 50; // Percentage
-  const centerY = 50; // Percentage
-
-  const iconPositions = platforms.map((_, index) => {
-    const angle = (index * 360) / platforms.length - 90; // Start from top
-    const rad = (angle * Math.PI) / 180;
-    return {
-      x: centerX + (radiusX / 10) * Math.cos(rad), // Convert to percentage
-      y: centerY + (radiusY / 10) * Math.sin(rad),
-    };
-  });
-
   return (
     <div
-      className={cn(
-        "bg-white rounded-3xl border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col",
-        className
-      )}
-      style={{ height: "calc(100vh - 12rem)" }}
+      className={cn("flex w-full h-full relative", className)}
+      style={{
+        boxShadow: "2.28px 2.28px 0px 0px rgba(176, 228, 255, 1)",
+      }}
     >
-      {/* Main Content Area with Purple Gradient Background */}
+      <style jsx>{`
+        @keyframes bounce-float-0 {
+          0%,
+          100% {
+            transform: scale(1) translate(0, 0);
+          }
+          25% {
+            transform: scale(1) translate(15px, -10px);
+          }
+          50% {
+            transform: scale(1) translate(-10px, -15px);
+          }
+          75% {
+            transform: scale(1) translate(20px, 8px);
+          }
+        }
+        @keyframes bounce-float-1 {
+          0%,
+          100% {
+            transform: scale(0.9) translate(0, 0);
+          }
+          30% {
+            transform: scale(0.9) translate(-18px, 12px);
+          }
+          60% {
+            transform: scale(0.9) translate(8px, -18px);
+          }
+          80% {
+            transform: scale(0.9) translate(-12px, 5px);
+          }
+        }
+        @keyframes bounce-float-2 {
+          0%,
+          100% {
+            transform: scale(0.8) translate(0, 0);
+          }
+          20% {
+            transform: scale(0.8) translate(-22px, 8px);
+          }
+          50% {
+            transform: scale(0.8) translate(-25px, -20px);
+          }
+          70% {
+            transform: scale(0.8) translate(-15px, 15px);
+          }
+        }
+        @keyframes bounce-float-3 {
+          0%,
+          100% {
+            transform: scale(1.1) translate(0, 0);
+          }
+          35% {
+            transform: scale(1.1) translate(22px, -12px);
+          }
+          65% {
+            transform: scale(1.1) translate(12px, 18px);
+          }
+          85% {
+            transform: scale(1.1) translate(25px, -5px);
+          }
+        }
+        @keyframes bounce-float-4 {
+          0%,
+          100% {
+            transform: scale(0.7) translate(0, 0);
+          }
+          25% {
+            transform: scale(0.7) translate(-12px, 20px);
+          }
+          55% {
+            transform: scale(0.7) translate(18px, 12px);
+          }
+          75% {
+            transform: scale(0.7) translate(-8px, -18px);
+          }
+        }
+        @keyframes bounce-float-5 {
+          0%,
+          100% {
+            transform: scale(1) translate(0, 0);
+          }
+          30% {
+            transform: scale(1) translate(-18px, -8px);
+          }
+          60% {
+            transform: scale(1) translate(-25px, 12px);
+          }
+          90% {
+            transform: scale(1) translate(-8px, -20px);
+          }
+        }
+      `}</style>
+      {/* Left blue line */}
       <div
-        className="relative flex-1 px-8 py-6 flex flex-col"
+        className="absolute left-0 z-20 w-1"
         style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          top: "36px",
+          bottom: "38px",
+          background:
+            "linear-gradient(180deg, #0A3669 0%, #438BB5 50%, #0B386B 100%)",
+        }}
+      />
+
+      {/* Right blue line */}
+      <div
+        className="absolute right-0 z-20 w-1"
+        style={{
+          top: "36px",
+          bottom: "38px",
+          background:
+            "linear-gradient(180deg, #0A3669 0%, #438BB5 50%, #0B386B 100%)",
+        }}
+      />
+
+      {/* Top blue bar */}
+      <div
+        className="absolute top-0 left-0 right-0 z-20 rounded-t-3xl"
+        style={{
+          background:
+            "linear-gradient(90deg, #0A3669 0%, #438BB5 51.79%, #0A3B72 100%)",
+          height: "36px",
         }}
       >
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 opacity-10">
+        {/* Date Header in blue bar */}
+        <div
+          className="flex items-center justify-end h-full px-4 gap-1"
+          style={{
+            fontFamily: "Inter",
+            fontWeight: 500,
+            fontStyle: "Medium",
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "-1%",
+          }}
+        >
+          <span className="text-white">8 Nov 2025</span>
+          <span style={{ color: "rgba(196, 196, 196, 1)" }}>
+            (updated every week)
+          </span>
+        </div>
+      </div>
+
+      {/* Left Sidebar */}
+      <div
+        className="w-90 p-4 flex flex-col"
+        style={{
+          backgroundImage: `url('/images/svgs/profile/bg-1.svg')`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          border: "1.52px solid",
+          borderImageSource:
+            "linear-gradient(180deg, #012F77 0%, #0257DD 100%)",
+          borderImageSlice: 1,
+          marginTop: "20px",
+          marginBottom: "22px",
+        }}
+      >
+        {/* User Profile */}
+        <div className="flex items-center gap-3 mb-4 mt-4">
           <div
-            className="absolute inset-0"
             style={{
-              backgroundImage: `
-                radial-gradient(circle at 25% 25%, white 2px, transparent 2px),
-                radial-gradient(circle at 75% 75%, white 2px, transparent 2px)
-              `,
-              backgroundSize: "50px 50px",
+              width: "110px",
+              height: "110px",
+              borderRadius: "43.93px",
+              borderWidth: "2.69px",
+              borderStyle: "solid",
+              borderColor: "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
             }}
+          >
+            <Image
+              src="/images/svgs/profile/vin.svg"
+              alt="Vin"
+              width={100}
+              height={100}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          </div>
+          <div>
+            <h2 className="font-bold text-base">{user.username}</h2>
+          </div>
+        </div>
+
+        {/* Badges and Score */}
+        <div className="mb-4">
+          <div
+            className="text-xs p-2"
+            style={{
+              height: "75.09480285644531px",
+              borderRadius: "6.07px",
+              background: "rgba(215, 237, 251, 0.8)",
+              border: "0.76px solid rgba(95, 144, 199, 1)",
+              boxShadow: "2.28px 2.28px 0px 0px rgba(4, 68, 150, 1)",
+            }}
+          >
+            <div
+              style={{
+                width: "264.7038879394531px",
+                height: "54.01665496826172px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "12.14px",
+                marginTop: "8px",
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/images/icons/badges.svg"
+                  alt="Badges"
+                  width={16.35088539123535}
+                  height={16.0950927734375}
+                />
+                <span
+                  style={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "100%",
+                    letterSpacing: "-1%",
+                  }}
+                >
+                  Badges earned:
+                  <span
+                    style={{
+                      marginLeft: "3px",
+                      fontFamily: "Inter",
+                      fontWeight: 700,
+                      fontSize: "12px",
+                      lineHeight: "100%",
+                      letterSpacing: "-1%",
+                    }}
+                  >
+                    22
+                  </span>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/images/icons/badges.svg"
+                  alt="Star"
+                  width={16.35088539123535}
+                  height={16.0950927734375}
+                />
+                <span
+                  style={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "100%",
+                    letterSpacing: "-1%",
+                  }}
+                >
+                  Consumer Score:
+                  <span
+                    style={{
+                      marginLeft: "3px",
+                      fontFamily: "Inter",
+                      fontWeight: 700,
+                      fontSize: "12px",
+                      lineHeight: "100%",
+                      letterSpacing: "-1%",
+                    }}
+                  >
+                    37 th percentile
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Creative Profile - Radar Graph */}
+        <div
+          style={{
+            height: "203.4545440673828px",
+            padding: "12px",
+            borderRadius: "6.07px",
+            background: "rgba(215, 237, 251, 0.8)",
+            border: "0.76px solid rgba(95, 144, 199, 1)",
+            boxShadow: "2.28px 2.28px 0px 0px rgba(4, 68, 150, 1)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            src="/images/svgs/profile/radar-graph.svg"
+            alt="Radar Graph"
+            width={250}
+            height={220}
           />
         </div>
+      </div>
 
-        {/* CONSO Title */}
-        <div className="text-center mb-4 relative z-10">
-          <h1 className="text-4xl font-bold text-white tracking-wider drop-shadow-lg">
-            CONSO
-          </h1>
+      {/* Right Panel - 3D Cube with Platform Icons */}
+      <div
+        className="flex-1 relative overflow-hidden"
+        style={{
+          backgroundImage: `url('/images/svgs/profile/bg-2.svg')`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          marginTop: "20px",
+          marginBottom: "22px",
+        }}
+      >
+        {/* 3D Cube Grid Background - using bg-2.svg */}
+        <div className="absolute inset-0 opacity-90" />
+
+        {/* Platform Icons in bubbles positioned in 3D space */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          {platforms.slice(0, 6).map((platform, index) => {
+            const positions = [
+              {
+                top: "18%",
+                left: "35%",
+                transform: "scale(1.0)",
+                width: 80,
+                iconWidth: 32,
+              },
+              {
+                top: "15%",
+                left: "70%",
+                transform: "scale(0.9)",
+                width: 75,
+                iconWidth: 30,
+              },
+              {
+                top: "35%",
+                left: "85%",
+                transform: "scale(0.8)",
+                width: 70,
+                iconWidth: 28,
+              },
+              {
+                top: "38%",
+                left: "15%",
+                transform: "scale(1.1)",
+                width: 85,
+                iconWidth: 34,
+              },
+              {
+                top: "60%",
+                left: "45%",
+                transform: "scale(0.7)",
+                width: 65,
+                iconWidth: 26,
+              },
+              {
+                top: "70%",
+                left: "75%",
+                transform: "scale(1.0)",
+                width: 80,
+                iconWidth: 32,
+              },
+            ];
+
+            const position = positions[index];
+
+            // Map platform names to icon file names
+            const getIconPath = (name: string) => {
+              const iconMap: { [key: string]: string } = {
+                X: "x.svg",
+                MetaMask: "metamask.svg",
+                Slush: "slush.svg",
+              };
+              return iconMap[name] || "metamask.svg";
+            };
+
+            return (
+              <div
+                key={index}
+                className="absolute transition-all duration-300 hover:scale-110 animate-bounce-float"
+                style={{
+                  top: position.top,
+                  left: position.left,
+                  transform: position.transform,
+                  animation: `bounce-float-${index} ${
+                    6 + index
+                  }s infinite ease-in-out`,
+                  animationDelay: `${index * 0.5}s`,
+                }}
+              >
+                <div className="relative">
+                  <Image
+                    src="/images/svgs/profile/bubble.svg"
+                    alt="Bubble"
+                    width={position.width}
+                    height={position.width}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Image
+                      src={`/images/icons/${getIconPath(platform.name)}`}
+                      alt={platform.name}
+                      width={position.iconWidth}
+                      height={position.iconWidth}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Diamond Icon */}
-        <div className="absolute top-6 right-6 z-10">
-          <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rotate-45 border-2 border-white/40 shadow-lg" />
-        </div>
-
-        {/* Central Platform Icons Ellipse - Takes remaining space */}
-        <div className="relative flex-1 flex items-center justify-center">
-          <div className="relative w-full h-full max-w-4xl"></div>
-        </div>
-
-        {/* Zaps Counter */}
-        <div className="text-center mt-4 relative z-10">
-          <div className="inline-flex items-center gap-2 bg-black/80 backdrop-blur-sm border-3 border-yellow-400 rounded-xl px-6 py-2 shadow-lg">
-            <span className="text-yellow-400 text-2xl">⚡</span>
-            <span className="text-white text-lg font-semibold">ZAPs:</span>
-            <span className="text-yellow-400 text-xl font-bold">
+        {/* Zaps Counter - Positioned like in the image */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+          <div
+            className="text-white flex items-center"
+            style={{
+              background: "rgba(1, 96, 185, 1)",
+              border: "1.35px solid rgba(188, 219, 255, 1)",
+              boxShadow: "0px 1.98px 7.56px 0px rgba(19, 66, 92, 1)",
+              width: "194.1934051513672px",
+              height: "52.998626708984375px",
+              borderRadius: "10.8px",
+              paddingTop: "10.8px",
+              paddingRight: "14.06px",
+              paddingBottom: "10.8px",
+              paddingLeft: "14.06px",
+              gap: "5.4px",
+            }}
+          >
+            <Image
+              src="/images/icons/Zaps.svg"
+              alt="Zaps"
+              width={11.47764778137207}
+              height={25.24072265625}
+            />
+            <span
+              style={{
+                fontFamily: "Inter",
+                fontWeight: 500,
+                fontStyle: "Medium",
+                fontSize: "21.6px",
+                lineHeight: "100%",
+                letterSpacing: "-1%",
+                color: "white",
+              }}
+            >
+              ZAPS:{" "}
+            </span>
+            <span
+              style={{
+                fontFamily: "Inter",
+                fontWeight: 700,
+                fontStyle: "Bold",
+                fontSize: "21.6px",
+                lineHeight: "100%",
+                letterSpacing: "-1%",
+                color: "rgba(255, 217, 119, 1)",
+              }}
+            >
               {zaps.toLocaleString()}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Bottom Buttons Section */}
-      <div className="bg-white px-8 py-4 flex justify-end gap-3 border-t-4 border-black">
-        <ConsoButton text="Mint Onchain" className="bg-[#FFE2B8]" />
-        {/* <button className="bg-white text-gray-900 px-5 py-2.5 rounded-xl font-semibold text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2">
-          Share on
-          <span className="font-bold">𝕏</span>
-        </button> */}
+      {/* Bottom blue bar */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-20 rounded-b-3xl flex items-center justify-between text-white"
+        style={{
+          background:
+            "linear-gradient(90deg, #0B386B 0%, #4288B3 41.22%, #0C3D74 96.58%)",
+          height: "38px",
+          paddingLeft: "20px",
+          paddingRight: "20px",
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 flex items-center justify-center">
+            <Image
+              src="/images/icons/conso.svg"
+              alt="Conso"
+              width={16.99527931213379}
+              height={22.99374008178711}
+            />
+          </div>
+          <Image
+            src="/images/svgs/profile/logo.svg"
+            alt="CONSO Logo"
+            width={60}
+            height={20}
+          />
+        </div>
+        <span
+          className="text-white"
+          style={{
+            fontFamily: "Inter",
+            fontWeight: 500,
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "-1%",
+          }}
+        >
+          zaps.conso.xyz
+        </span>
       </div>
     </div>
   );
