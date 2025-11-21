@@ -3,8 +3,11 @@
 import BadgesBackground from "@/components/backgrounds/Badges";
 import ProfileCard from "@/components/profile/ProfileCard";
 import ConsoButton from "@/components/common/ConsoButton";
+import { useConsoUser } from "@/contexts/ConsoUserContext";
 
 const ProfilePage = () => {
+  const { consoUser } = useConsoUser();
+
   // Platform icons data
   const platforms = [
     { name: "X", icon: "𝕏", bgColor: "bg-gray-900" },
@@ -13,10 +16,6 @@ const ProfilePage = () => {
     { name: "X", icon: "𝕏", bgColor: "bg-gray-900" },
     { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
     { name: "Slush", icon: "🧊", bgColor: "bg-blue-400" },
-
-    // { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
-    // { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
-    // { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
   ];
 
   return (
@@ -28,10 +27,12 @@ const ProfilePage = () => {
           <ProfileCard
             user={{
               name: "Vintromyth",
-              username: "@vintromyth",
+              username: consoUser.substringSuiAddress || "@vintromyth",
               avatar: "/images/pngs/profile.png",
             }}
-            zaps={27567}
+            zaps={consoUser.zapsScore}
+            badges={consoUser.badges}
+            consumerScore={consoUser.consumerPercentile}
             platforms={platforms}
             className="h-full"
           />

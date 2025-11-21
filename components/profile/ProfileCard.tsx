@@ -16,6 +16,8 @@ interface ProfileCardProps {
     avatar: string;
   };
   zaps: number;
+  badges: number;
+  consumerScore: number;
   platforms?: PlatformIcon[];
   className?: string;
 }
@@ -23,6 +25,8 @@ interface ProfileCardProps {
 const ProfileCard: React.FC<ProfileCardProps> = ({
   user,
   zaps,
+  badges = 0,
+  consumerScore = 0,
   platforms = [],
   className,
 }) => {
@@ -273,7 +277,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                       letterSpacing: "-1%",
                     }}
                   >
-                    22
+                    {badges}
                   </span>
                 </span>
               </div>
@@ -304,7 +308,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                       letterSpacing: "-1%",
                     }}
                   >
-                    37 th percentile
+                    {consumerScore} th percentile
                   </span>
                 </span>
               </div>

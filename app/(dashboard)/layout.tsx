@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import NavigationMenu from "@/components/navigation/NavigationMenu";
 import {
@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import { inter, solway } from "../layout";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
 import AssetLoader from "@/components/loaders/AssetLoader";
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useConsoUser } from "@/contexts/ConsoUserContext";
 
 export default function DashboardLayout({
   children,
@@ -24,6 +26,15 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
+
+  const currentAccount = useCurrentAccount();
+  const { consoUser } = useConsoUser();
+
+  useEffect(() => {
+    if (!currentAccount) {
+      router.push("/login");
+    }
+  }, [currentAccount, router]);
 
   // Centralized list of ALL assets used across the entire dashboard
   const allAssets = [
@@ -104,7 +115,7 @@ export default function DashboardLayout({
 
   const user = {
     avatar: "/images/pngs/profile.png",
-    name: "Vintromyth",
+    name: consoUser.substringSuiAddress || "Connect Wallet",
     isActive: pathname === "/profile",
     onClick: () => router.push("/profile"),
   };
@@ -138,7 +149,7 @@ export default function DashboardLayout({
             <div className="flex items-center gap-2">
               <Image
                 src={"/images/icons/zaps.svg"}
-                alt={"Lgo"}
+                alt={"Zaps"}
                 width={10}
                 height={10}
                 className="w-6 h-6 object-contain"
@@ -149,7 +160,7 @@ export default function DashboardLayout({
               <span
                 className={cn("text-yellow-400 font-bold", inter.className)}
               >
-                27,567
+                {consoUser.zapsScore.toLocaleString()}
               </span>
             </div>
 
@@ -157,7 +168,7 @@ export default function DashboardLayout({
             <div className="flex items-center gap-2">
               <Image
                 src={"/images/icons/badges.svg"}
-                alt={"Lgo"}
+                alt={"Badges"}
                 width={10}
                 height={10}
                 className="w-6 h-6 object-contain"
@@ -168,7 +179,7 @@ export default function DashboardLayout({
               <span
                 className={cn("text-yellow-400 font-bold", inter.className)}
               >
-                40
+                {consoUser.badges}
               </span>
             </div>
 
@@ -176,7 +187,7 @@ export default function DashboardLayout({
             <button className="flex items-center gap-2">
               <Image
                 src={"/images/icons/stats.svg"}
-                alt={"Lgo"}
+                alt={"Stats"}
                 width={10}
                 height={10}
                 className="w-6 h-6 object-contain"
@@ -191,7 +202,11 @@ export default function DashboardLayout({
 
       {/* Navigation Menu */}
       <div className="fixed left-6 top-24 z-40">
-        <NavigationMenu items={navigationItems} user={user} />
+        <NavigationMenu
+          items={navigationItems}
+          user={user}
+          consoUser={consoUser}
+        />
       </div>
 
       {/* Page Content */}

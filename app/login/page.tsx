@@ -3,8 +3,24 @@
 import OnboardingBackground from "@/components/backgrounds/Onboarding";
 import ConsoButton from "@/components/common/ConsoButton";
 import HeadingText from "@/components/common/HeadingText";
+import { ConnectModal, useCurrentAccount } from "@mysten/dapp-kit";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const App = () => {
+  const currentAccount = useCurrentAccount();
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (currentAccount) {
+      // If the user is already logged in, close the modal
+      router.push("/home");
+      // Optionally, redirect to another page
+      // window.location.href = "/dashboard";
+    }
+  }, [currentAccount, router]);
+
   return (
     <div className="min-h-screen relative">
       <OnboardingBackground />
@@ -21,11 +37,24 @@ const App = () => {
           {/* Login Buttons Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Slush Button */}
-            <ConsoButton
+            {/* <ConsoButton
               logo={"/images/icons/slush.svg"}
               text="Slush"
               onClick={() => console.log("Slush login")}
               logoClassName="text-blue-500"
+            /> */}
+
+            <ConnectModal
+              trigger={
+                <ConsoButton
+                  logo={"/images/icons/slush.svg"}
+                  text="Slush"
+                  onClick={() => console.log("Slush login")}
+                  logoClassName="text-blue-500"
+                />
+              }
+              open={open}
+              onOpenChange={(isOpen) => setOpen(isOpen)}
             />
 
             {/* Google Button */}
