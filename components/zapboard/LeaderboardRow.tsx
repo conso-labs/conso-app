@@ -58,9 +58,9 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
       </div>
 
       {/* Consumer Score */}
-      <div className="text-lg font-semibold text-gray-900 text-center">
+      {/* <div className="text-lg font-semibold text-gray-900 text-center">
         {consumerScore.toLocaleString()}
-      </div>
+      </div> */}
 
       {/* Zaps */}
       <div className="flex justify-end">

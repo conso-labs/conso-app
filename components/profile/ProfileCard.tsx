@@ -212,7 +212,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             }}
           >
             <Image
-              src="/images/svgs/profile/vin.svg"
+              src="/images/others/profile.jpg"
               alt="Vin"
               width={100}
               height={100}
@@ -233,7 +233,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <div
             className="text-xs p-2"
             style={{
-              height: "75.09480285644531px",
+              height: "45px",
               borderRadius: "6.07px",
               background: "rgba(215, 237, 251, 0.8)",
               border: "0.76px solid rgba(95, 144, 199, 1)",
@@ -281,12 +281,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </span>
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Image
                   src="/images/icons/badges.svg"
                   alt="Star"
-                  width={16.35088539123535}
-                  height={16.0950927734375}
+                  width={16}
+                  height={16}
                 />
                 <span
                   style={{
@@ -311,7 +311,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     {consumerScore} th percentile
                   </span>
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

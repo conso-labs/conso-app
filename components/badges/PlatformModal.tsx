@@ -4,10 +4,12 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import ConsoButton from "../common/ConsoButton";
+import { getPlatformContent, PlatformName } from "@/constants/platformData";
 
 interface PlatformModalProps {
   isOpen: boolean;
   onClose: () => void;
+  zapReward: number;
   platform: {
     name: string;
     icon: React.ReactNode;
@@ -25,11 +27,14 @@ const PlatformModal: React.FC<PlatformModalProps> = ({
   isOpen,
   onClose,
   platform,
+  zapReward,
   isConnected = false,
   onConnect,
   onUpdate,
 }) => {
   if (!isOpen) return null;
+
+  const platformContent = getPlatformContent(platform.name);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -161,65 +166,144 @@ const PlatformModal: React.FC<PlatformModalProps> = ({
 
           {/* Content */}
           {!isConnected ? (
-            <div className="bg-gray-50 rounded-2xl border-2 border-black p-4 mb-6">
+            <div className="bg-gray-50 rounded-2xl border-2 border-black p-4 h-130 overflow-y-auto">
+              {/* Activity Section */}
               <h3 className="text-md font-bold text-gray-900 mb-3">Activity</h3>
               <p className="text-sm text-gray-700 mb-3">
-                Connect your {platform.name} account to unlock:
+                {platformContent?.activity.description ||
+                  `Connect your ${platform.name} account to unlock:`}
               </p>
               <ul className="space-y-2 mb-3">
-                <li className="text-sm text-gray-700 flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Channel Overview, Engagement & Audience Insights</span>
-                </li>
-                <li className="text-sm text-gray-700 flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>CONSO Reputation Badges + ZAP Missions</span>
-                </li>
+                {platformContent?.activity.benefits.map((benefit, index) => (
+                  <li
+                    key={index}
+                    className="text-sm text-gray-700 flex items-start"
+                  >
+                    <span className="mr-2">•</span>
+                    <span>{benefit}</span>
+                  </li>
+                )) || (
+                  <>
+                    <li className="text-sm text-gray-700 flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>
+                        Channel Overview, Engagement & Audience Insights
+                      </span>
+                    </li>
+                    <li className="text-sm text-gray-700 flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>CONSO Reputation Badges + ZAP Missions</span>
+                    </li>
+                  </>
+                )}
               </ul>
 
+              {/* Instruction Section */}
               <div className="mt-4">
                 <h3 className="text-md font-bold text-gray-900 mb-3">
                   Instruction
                 </h3>
-
                 <ol className="space-y-1.5 text-sm text-gray-700">
-                  <li>
-                    1. Click Connect and authenticate your {platform.name}{" "}
-                    account
-                  </li>
-                  <li>2. Approve read-only analytics access</li>
-                  <li>3. Data auto-syncs every 24 h</li>
-                  <li>
-                    4. Manage or disconnect anytime via ( Passport → Connections
-                    )
-                  </li>
+                  {platformContent?.instruction.steps.map((step, index) => (
+                    <li key={index}>
+                      {index + 1}. {step}
+                    </li>
+                  )) || (
+                    <>
+                      <li>
+                        1. Click Connect and authenticate your {platform.name}{" "}
+                        account
+                      </li>
+                      <li>2. Approve read-only analytics access</li>
+                      <li>3. Data auto-syncs every 24 h</li>
+                      <li>
+                        4. Manage or disconnect anytime via ( Passport →
+                        Connections )
+                      </li>
+                    </>
+                  )}
                 </ol>
               </div>
 
+              {/* Scoring Section */}
               <div className="mt-4 pt-4 border-t-2 border-gray-300">
                 <h3 className="text-md font-bold text-gray-900 mb-3">
                   Scoring
                 </h3>
-                <p className="text-sm text-gray-700">
-                  Subscribers — 25% | Views — 20% | Engagement Rate — 30%
-                  Consistency — 15% | Channel Age & Region — 10%
-                </p>
+                {platformContent?.scoring.parameters ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b-2 border-gray-300">
+                          <th className="text-left py-2 pr-4 font-bold text-gray-900">
+                            Parameter
+                          </th>
+                          <th className="text-left py-2 pr-4 font-bold text-gray-900">
+                            Weight
+                          </th>
+                          <th className="text-left py-2 font-bold text-gray-900">
+                            Description
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {platformContent.scoring.parameters.map(
+                          (param, index) => (
+                            <tr
+                              key={index}
+                              className="border-b border-gray-200"
+                            >
+                              <td className="py-2 pr-4 text-gray-700">
+                                {param.parameter}
+                              </td>
+                              <td className="py-2 pr-4 text-gray-700">
+                                {param.weight}
+                              </td>
+                              <td className="py-2 text-gray-700">
+                                {param.description}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-700">
+                    Scoring metrics are being configured for this platform.
+                  </p>
+                )}
               </div>
             </div>
           ) : (
             <div className="bg-gray-50 rounded-2xl border-2 border-black p-4 mb-6">
               <p className="text-sm text-gray-700 mb-3">
-                Connect your {platform.name} account to unlock:
+                {platformContent?.activity.description ||
+                  `Connect your ${platform.name} account to unlock:`}
               </p>
               <ul className="space-y-2">
-                <li className="text-sm text-gray-700 flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>Channel Overview, Engagement & Audience Insights</span>
-                </li>
-                <li className="text-sm text-gray-700 flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>CONSO Reputation Badges + ZAP Missions</span>
-                </li>
+                {platformContent?.activity.benefits.map((benefit, index) => (
+                  <li
+                    key={index}
+                    className="text-sm text-gray-700 flex items-start"
+                  >
+                    <span className="mr-2">•</span>
+                    <span>{benefit}</span>
+                  </li>
+                )) || (
+                  <>
+                    <li className="text-sm text-gray-700 flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>
+                        Channel Overview, Engagement & Audience Insights
+                      </span>
+                    </li>
+                    <li className="text-sm text-gray-700 flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>CONSO Reputation Badges + ZAP Missions</span>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           )}
@@ -270,19 +354,23 @@ const PlatformModal: React.FC<PlatformModalProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-800 rounded-xl border-2 border-black p-3">
                 <p className="text-gray-400 text-xs mb-1">Total ZAPs</p>
-                <p className="text-white font-bold text-lg">25,000</p>
+                <p className="text-white font-bold text-lg">
+                  {zapReward.toLocaleString()}
+                </p>
               </div>
 
               <div className="bg-gray-800 rounded-xl border-2 border-black p-3">
                 <p className="text-gray-400 text-xs mb-1">ZAPs Earned</p>
-                <p className="text-white font-bold text-lg">NA</p>
+                <p className="text-white font-bold text-lg">
+                  {isConnected ? "1,000" : "NA"}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Login Button */}
           <ConsoButton
-            text={isConnected ? "Update" : `Login with ${platform.name}`}
+            text={isConnected ? "Update" : `Connect ${platform.name}`}
             onClick={isConnected ? onUpdate : onConnect}
             className={cn(
               " items-center justify-center",

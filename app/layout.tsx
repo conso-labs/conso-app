@@ -37,7 +37,7 @@ export default function RootLayout({
     <html lang="en">
       <QueryClientProvider client={queryClient}>
         <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
-          <WalletProvider>
+          <WalletProvider autoConnect>
             <ConsoUserProvider>
               <body
                 className={`${inter.variable} ${solway.variable} antialiased`}

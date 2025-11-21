@@ -48,12 +48,12 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
 
   const handleModalConnect = () => {
     onConnect?.();
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
   };
 
   const handleModalUpdate = () => {
     onUpdate?.();
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
   };
 
   return (
@@ -117,6 +117,7 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
           price: platformDetails.price,
           type: platformDetails.type,
         }}
+        zapReward={zapReward}
         isConnected={isConnected}
         onConnect={handleModalConnect}
         onUpdate={handleModalUpdate}

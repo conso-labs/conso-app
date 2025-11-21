@@ -38,9 +38,9 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
         <div className="text-sm font-bold text-gray-700 text-center">
           Badges
         </div>
-        <div className="text-sm font-bold text-gray-700 text-center">
+        {/* <div className="text-sm font-bold text-gray-700 text-center">
           Consumer score
-        </div>
+        </div> */}
         <div className="text-sm font-bold text-gray-700 text-right">Zaps</div>
       </div>
 

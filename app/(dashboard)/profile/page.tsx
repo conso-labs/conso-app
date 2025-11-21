@@ -28,7 +28,7 @@ const ProfilePage = () => {
             user={{
               name: "Vintromyth",
               username: consoUser.substringSuiAddress || "@vintromyth",
-              avatar: "/images/pngs/profile.png",
+              avatar: "/images/others/profile.jpg",
             }}
             zaps={consoUser.zapsScore}
             badges={consoUser.badges}

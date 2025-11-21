@@ -11,13 +11,25 @@ const ZapboardPage = () => {
   // Sample leaderboard data matching the design
   const leaderboardData: LeaderboardEntry[] = [
     {
-      rank: 1,
+      rank: 72,
       user: {
         name: "Henrietta O'Connell",
         username: "@henrietta",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
       badges: 35,
+      consumerScore: 2114424,
+      zaps: 1000,
+      isHighlighted: true,
+    },
+    {
+      rank: 1,
+      user: {
+        name: "Darrel Bins",
+        username: "@darrel",
+        avatar: "/images/others/profile.jpg",
+      },
+      badges: 34,
       consumerScore: 2114424,
       zaps: 1000,
     },
@@ -26,7 +38,7 @@ const ZapboardPage = () => {
       user: {
         name: "Darrel Bins",
         username: "@darrel",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
       badges: 34,
       consumerScore: 2114424,
@@ -37,9 +49,9 @@ const ZapboardPage = () => {
       user: {
         name: "Sally Kovacek",
         username: "@5TxoahjZNtsoVdC",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
-      badges: 12241,
+      badges: 34,
       consumerScore: 2114424,
       zaps: 1000,
     },
@@ -48,9 +60,9 @@ const ZapboardPage = () => {
       user: {
         name: "Jose Gulgowski",
         username: "@c6axRR8zNeqsb6G",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
-      badges: 12241,
+      badges: 34,
       consumerScore: 2114424,
       zaps: 1000,
     },
@@ -59,9 +71,9 @@ const ZapboardPage = () => {
       user: {
         name: "Ada Leannon",
         username: "@T9rKwtVJ3rawKn_",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
-      badges: 12241,
+      badges: 34,
       consumerScore: 2114424,
       zaps: 1000,
     },
@@ -70,9 +82,9 @@ const ZapboardPage = () => {
       user: {
         name: "Mona Bechtelar III",
         username: "@YlBVJw090LfCRDq",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
-      badges: 12241,
+      badges: 34,
       consumerScore: 2114424,
       zaps: 1000,
     },
@@ -81,23 +93,12 @@ const ZapboardPage = () => {
       user: {
         name: "Elmer Rau",
         username: "@0jlRhxwSES2o0KI",
-        avatar: "/images/pngs/profile.png",
+        avatar: "/images/others/profile.jpg",
       },
-      badges: 12241,
+      badges: 34,
       consumerScore: 2114424,
       zaps: 1000,
-      isHighlighted: true,
-    },
-    {
-      rank: 11,
-      user: {
-        name: "Terrence Sipes",
-        username: "@bezpVnNuiRFR3zO",
-        avatar: "/images/pngs/profile.png",
-      },
-      badges: 12241,
-      consumerScore: 2114424,
-      zaps: 1000,
+      isHighlighted: false,
     },
   ];
 

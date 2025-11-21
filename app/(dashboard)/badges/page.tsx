@@ -33,13 +33,27 @@ import {
   SuiPassportIcon,
   ClaynosaurzIcon,
 } from "@/components/badges/icons";
+import { useConsoUser } from "@/contexts/ConsoUserContext";
+import { supabase } from "@/lib/supabase/client";
 
 type Zone = "social" | "gaming" | "creative" | "onchain";
+
+type Badge = {
+  id: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  zapReward: number;
+  backgroundColor: string;
+  disabled?: boolean;
+};
 
 const BadgesPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const zoneParam = searchParams.get("activeZone") as Zone | null;
+
+  const { consoUser, updateConsoUser } = useConsoUser();
 
   const [activeZone, setActiveZone] = useState<Zone>(() => {
     if (
@@ -316,6 +330,35 @@ const BadgesPage = () => {
     router.push(`/badges?activeZone=${zone}`);
   };
 
+  const handleUpdateFlow = () => {
+    console.log("Updating platform data");
+    // fetch latest platform data
+  };
+
+  const handleConnectFlow = async (badge: Badge) => {
+    console.log(`Connecting ${badge.title}`);
+
+    await supabase.auth
+      .signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `http://localhost:3000/badges`,
+        },
+      })
+      .then((res) => {
+        console.log("Supabase OAuth Response:", res);
+
+        // update conso user
+        updateConsoUser({
+          badges: consoUser.badges + 1,
+          zapsScore: consoUser.zapsScore + 1000,
+          connectedAccounts: [...consoUser.connectedAccounts, badge.title],
+        });
+
+        // fetch platform data
+      });
+  };
+
   return (
     <div className="relative min-h-screen">
       <BadgesBackground />
@@ -353,11 +396,13 @@ const BadgesPage = () => {
                 key={badge.id}
                 icon={badge.icon}
                 title={badge.title}
+                isConnected={consoUser.connectedAccounts.includes(badge.title)}
                 description={badge.description}
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
-                onConnect={() => console.log(`Connecting to ${badge.title}`)}
+                onConnect={() => handleConnectFlow(badge)}
+                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>
@@ -374,7 +419,8 @@ const BadgesPage = () => {
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
-                onConnect={() => console.log(`Connecting to ${badge.title}`)}
+                onConnect={() => handleConnectFlow(badge)}
+                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>
@@ -391,7 +437,8 @@ const BadgesPage = () => {
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
-                onConnect={() => console.log(`Connecting to ${badge.title}`)}
+                onConnect={() => handleConnectFlow(badge)}
+                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>
@@ -408,7 +455,8 @@ const BadgesPage = () => {
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
-                onConnect={() => console.log(`Connecting to ${badge.title}`)}
+                onConnect={() => handleConnectFlow(badge)}
+                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>

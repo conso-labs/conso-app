@@ -44,7 +44,7 @@ export default function DashboardLayout({
     "/images/icons/badges.svg",
     "/images/icons/stats.svg",
     // Profile avatar
-    "/images/pngs/profile.png",
+    "/images/others/profile.jpg",
     // Homepage assets
     "/images/svgs/homepage/bg.svg",
     "/images/svgs/homepage/scene.svg",
@@ -114,7 +114,7 @@ export default function DashboardLayout({
   ];
 
   const user = {
-    avatar: "/images/pngs/profile.png",
+    avatar: "/images/others/profile.jpg",
     name: consoUser.substringSuiAddress || "Connect Wallet",
     isActive: pathname === "/profile",
     onClick: () => router.push("/profile"),
