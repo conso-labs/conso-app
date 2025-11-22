@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BadgesBackground from "@/components/backgrounds/Badges";
 import ZoneTab from "@/components/badges/ZoneTab";
@@ -34,7 +34,6 @@ import {
   ClaynosaurzIcon,
 } from "@/components/badges/icons";
 import { useConsoUser } from "@/contexts/ConsoUserContext";
-import { supabase } from "@/lib/supabase/client";
 
 type Zone = "social" | "gaming" | "creative" | "onchain";
 
@@ -64,6 +63,32 @@ const BadgesPage = () => {
     }
     return "social";
   });
+
+  // Handle OAuth callback
+  useEffect(() => {
+    const authStatus = searchParams.get("auth");
+    const error = searchParams.get("error");
+
+    if (authStatus === "success") {
+      console.log("Google OAuth authentication successful!");
+
+      // Update conso user after successful auth
+      updateConsoUser({
+        badges: consoUser.badges + 1,
+        zapsScore: consoUser.zapsScore + 1000,
+        connectedAccounts: [...consoUser.connectedAccounts, "Google"],
+      });
+
+      // Clean up URL
+      router.replace("/badges");
+    }
+
+    if (error) {
+      console.error("Google OAuth authentication error:", error);
+      // Clean up URL
+      router.replace("/badges");
+    }
+  }, [searchParams, router, consoUser, updateConsoUser]);
 
   const socialBadges = [
     {
@@ -335,28 +360,12 @@ const BadgesPage = () => {
     // fetch latest platform data
   };
 
-  const handleConnectFlow = async (badge: Badge) => {
+  const handleConnectFlow = (badge: Badge) => {
     console.log(`Connecting ${badge.title}`);
+    console.log("Initiating Google OAuth flow...");
 
-    await supabase.auth
-      .signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `http://localhost:3000/badges`,
-        },
-      })
-      .then((res) => {
-        console.log("Supabase OAuth Response:", res);
-
-        // update conso user
-        updateConsoUser({
-          badges: consoUser.badges + 1,
-          zapsScore: consoUser.zapsScore + 1000,
-          connectedAccounts: [...consoUser.connectedAccounts, badge.title],
-        });
-
-        // fetch platform data
-      });
+    // Redirect to our OAuth authorization endpoint
+    router.push("/api/auth/google/authorize");
   };
 
   return (
