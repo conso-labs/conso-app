@@ -113,12 +113,14 @@ class TwitchChannelAnalyzer {
     return response.json();
   }
 
-  async getChannelStats(username: string): Promise<TwitchChannelStats | null> {
+  async getChannelStats(identifier: string, isUserId: boolean = false): Promise<TwitchChannelStats | null> {
     try {
       // Get user information
-      const userData = await this.makeRequest("/users", {
-        login: username.toLowerCase(),
-      });
+      const params = isUserId
+        ? { id: identifier }
+        : { login: identifier.toLowerCase() };
+
+      const userData = await this.makeRequest("/users", params);
 
       if (!userData.data || userData.data.length === 0) {
         return null;
@@ -143,7 +145,7 @@ class TwitchChannelAnalyzer {
       const channel = channelData.data[0];
 
       // Get streams data (recent activity)
-      const streamStats = await this.getStreamStatistics(user.id, username);
+      const streamStats = await this.getStreamStatistics(user.id);
 
       return {
         channel_id: user.id,
@@ -169,7 +171,7 @@ class TwitchChannelAnalyzer {
     }
   }
 
-  private async getStreamStatistics(userId: string, username: string) {
+  private async getStreamStatistics(userId: string) {
     try {
       // Get recent videos (VODs) to analyze streaming patterns
       const videosData = await this.makeRequest("/videos", {
@@ -202,7 +204,7 @@ class TwitchChannelAnalyzer {
       let totalDurationSeconds = 0;
       let maxViewCount = 0;
 
-      recentVideos.forEach((video: any) => {
+      recentVideos.forEach((video: { view_count: string; duration: string }) => {
         const views = parseInt(video.view_count);
         totalViewCount += views;
         maxViewCount = Math.max(maxViewCount, views);
@@ -266,7 +268,19 @@ class TwitchChannelAnalyzer {
   }
 
   calculateChannelScore(stats: TwitchChannelStats): TwitchChannelScore {
-    const scores: any = {};
+    const scores: {
+      followers: number;
+      average_viewers: number;
+      stream_frequency: number;
+      stream_duration: number;
+      engagement: number;
+    } = {
+      followers: 0,
+      average_viewers: 0,
+      stream_frequency: 0,
+      stream_duration: 0,
+      engagement: 0,
+    };
 
     // Follower score (0-30 points) - logarithmic scale
     if (stats.follower_count > 0) {
@@ -275,8 +289,6 @@ class TwitchChannelAnalyzer {
         (Math.log10(stats.follower_count) / 7) * 30
       );
       scores.followers = Math.round(followerScore * 100) / 100;
-    } else {
-      scores.followers = 0;
     }
 
     // Average viewers score (0-30 points) - logarithmic scale
@@ -287,8 +299,6 @@ class TwitchChannelAnalyzer {
         (Math.log10(stats.average_viewers) / 5) * 30
       );
       scores.average_viewers = Math.round(viewerScore * 100) / 100;
-    } else {
-      scores.average_viewers = 0;
     }
 
     // Stream frequency score (0-20 points)
@@ -317,7 +327,7 @@ class TwitchChannelAnalyzer {
     scores.engagement = Math.round(engagementScore * 100) / 100;
 
     const totalScore = Object.values(scores).reduce(
-      (sum: number, score: any) => sum + score,
+      (sum: number, score: number) => sum + score,
       0
     );
 
@@ -342,8 +352,9 @@ class TwitchChannelAnalyzer {
 export async function GET(req: NextRequest) {
   const requestURL = new URL(req.url as string);
   const username = requestURL.searchParams.get("username");
+  const userId = requestURL.searchParams.get("id");
 
-  console.log("Received Twitch data request for username:", username);
+  console.log("Received Twitch data request for username:", username, "or id:", userId);
   try {
     // Get credentials from environment variables
     const clientId = process.env.TWITCH_CLIENT_ID;
@@ -360,11 +371,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (!username) {
+    if (!username && !userId) {
       return NextResponse.json(
         {
           success: false,
-          error: "Username is required. Use ?username=channelname",
+          error: "Username or ID is required. Use ?username=channelname or ?id=userid",
         } as ApiResponse,
         { status: 400 }
       );
@@ -373,8 +384,10 @@ export async function GET(req: NextRequest) {
     // Initialize analyzer
     const analyzer = new TwitchChannelAnalyzer(clientId, clientSecret);
 
-    // Fetch channel stats
-    const stats = await analyzer.getChannelStats(username);
+    // Fetch channel stats - prefer userId if both are provided
+    const identifier = userId || username;
+    const isUserId = !!userId;
+    const stats = await analyzer.getChannelStats(identifier!, isUserId);
 
     if (!stats) {
       return NextResponse.json(

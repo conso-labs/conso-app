@@ -5,4 +5,5 @@ export type ConsoUser = {
   badges: number;
   zapsScore: number;
   consumerPercentile: number;
+  platformData?: Record<string, object>;
 };

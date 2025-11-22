@@ -3,13 +3,15 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import PlatformModal from "./PlatformModal";
+import GamingPlatformModal from "./GamingPlatformModal";
+import { useConsoUser } from "@/contexts/ConsoUserContext";
 
 interface BadgeCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   zapReward: number;
-  onConnect?: () => void;
+  onConnect?: (username: string) => void;
   onUpdate?: () => void;
   isConnected?: boolean;
   isDisabled?: boolean;
@@ -24,7 +26,7 @@ interface BadgeCardProps {
   };
 }
 
-const BadgeCard: React.FC<BadgeCardProps> = ({
+const GamingBadgeCard: React.FC<BadgeCardProps> = ({
   icon,
   title,
   description,
@@ -44,27 +46,75 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
   },
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { consoUser, updateConsoUser } = useConsoUser();
 
   const handleConnectClick = () => {
     if (isDisabled) return;
 
     // If skipModal is true, directly call onConnect without opening modal
     if (skipModal) {
-      onConnect?.();
+      onConnect?.("");
       return;
     }
 
     setIsModalOpen(true);
   };
 
-  const handleModalConnect = () => {
-    onConnect?.();
-    // setIsModalOpen(false);
+  const handleModalConnect = (username: string) => {
+    console.log(`Connecting ${title} with username: ${username}`);
+
+    // Check if already connected
+    if (!consoUser.connectedAccounts.includes(title)) {
+      // New connection - add to connected accounts, update badge count and zaps
+      updateConsoUser({
+        badges: consoUser.badges + 1,
+        zapsScore: consoUser.zapsScore + zapReward,
+        connectedAccounts: [...consoUser.connectedAccounts, title],
+        platformData: {
+          ...consoUser.platformData,
+          [title]: {
+            username,
+            verified: false,
+            connectedAt: new Date().toISOString(),
+          },
+        },
+      });
+    } else {
+      // Already connected - just update username
+      updateConsoUser({
+        platformData: {
+          ...consoUser.platformData,
+          [title]: {
+            ...(consoUser.platformData?.[title] || {}),
+            username,
+          },
+        },
+      });
+    }
+
+    // Call the optional onConnect callback if provided
+    onConnect?.(username);
   };
 
-  const handleModalUpdate = () => {
+  const handleGamingPlatfromVerify = () => {
+    console.log(`Verifying ${title}`);
+
+    // api call here with checks
+
+    // Set verified status to true in platformData
+    updateConsoUser({
+      platformData: {
+        ...consoUser.platformData,
+        [title]: {
+          ...(consoUser.platformData?.[title] || {}),
+          verified: true,
+          verifiedAt: new Date().toISOString(),
+        },
+      },
+    });
+
+    // Call the optional onUpdate callback if provided
     onUpdate?.();
-    // setIsModalOpen(false);
   };
 
   return (
@@ -123,7 +173,7 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
         </button>
       </div>
 
-      <PlatformModal
+      <GamingPlatformModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         platform={{
@@ -136,11 +186,18 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
         }}
         zapReward={zapReward}
         isConnected={isConnected}
+        isVerified={
+          consoUser.platformData?.[title]
+            ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-expect-error
+              consoUser.platformData[title].verified
+            : false
+        }
         onConnect={handleModalConnect}
-        onUpdate={handleModalUpdate}
+        onVerify={handleGamingPlatfromVerify}
       />
     </>
   );
 };
 
-export default BadgeCard;
+export default GamingBadgeCard;

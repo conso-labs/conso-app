@@ -30,11 +30,11 @@ export default function DashboardLayout({
   const currentAccount = useCurrentAccount();
   const { consoUser } = useConsoUser();
 
-  useEffect(() => {
-    if (!currentAccount) {
-      router.push("/login");
-    }
-  }, [currentAccount, router]);
+  // useEffect(() => {
+  //   if (!currentAccount) {
+  //     router.push("/login");
+  //   }
+  // }, [currentAccount, router]);
 
   // Centralized list of ALL assets used across the entire dashboard
   const allAssets = [

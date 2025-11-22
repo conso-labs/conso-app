@@ -23,6 +23,7 @@ const defaultConsoUser: ConsoUser = {
   badges: 0,
   zapsScore: 0,
   consumerPercentile: 0,
+  platformData: {},
 };
 
 const ConsoUserContext = createContext<ConsoUserContextType | undefined>(
@@ -54,7 +55,7 @@ export const ConsoUserProvider: React.FC<{ children: ReactNode }> = ({
             currentAccount.address.slice(0, 4) +
             "..." +
             currentAccount.address.slice(-4),
-          connectedAccounts: [],
+          connectedAccounts: ["Slush Wallet"],
           badges: 0,
           zapsScore: 0,
           consumerPercentile: 0,

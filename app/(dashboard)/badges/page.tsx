@@ -1,39 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BadgesBackground from "@/components/backgrounds/Badges";
 import ZoneTab from "@/components/badges/ZoneTab";
 import BadgeSection from "@/components/badges/BadgeSection";
 import BadgeCard from "@/components/badges/BadgeCard";
-import {
-  YouTubeIcon,
-  TwitchIcon,
-  XIcon,
-  RedditIcon,
-  FarcasterIcon,
-  InstagramIcon,
-  DiscordIcon,
-  TelegramIcon,
-  PlaystationIcon,
-  XboxIcon,
-  SteamIcon,
-  GooglePlayIcon,
-  RobloxIcon,
-  ChessIcon,
-  EpicGamesIcon,
-  RetroachievementsIcon,
-  GithubIcon,
-  SpotifyIcon,
-  MediumIcon,
-  SubstackIcon,
-  SuiNSIcon,
-  SlushIcon,
-  SuiPlayIcon,
-  SuiPassportIcon,
-  ClaynosaurzIcon,
-} from "@/components/badges/icons";
 import { useConsoUser } from "@/contexts/ConsoUserContext";
+import { supabase } from "@/lib/supabase/client";
+import {
+  socialBadges,
+  gamingBadges,
+  creativeBadges,
+  onchainBadges,
+} from "@/constants/badges";
+import { Provider, Session } from "@supabase/supabase-js";
+import GamingBadgeCard from "@/components/badges/GamingBadgeCard";
 
 type Zone = "social" | "gaming" | "creative" | "onchain";
 
@@ -45,6 +27,19 @@ type Badge = {
   zapReward: number;
   backgroundColor: string;
   disabled?: boolean;
+  skipModal?: boolean;
+  customButtonText?: string;
+};
+
+// Map badge IDs to Supabase OAuth providers
+const PROVIDER_MAP: Record<string, string> = {
+  youtube: "google",
+  twitch: "twitch",
+  x: "twitter",
+  discord: "discord",
+  reddit: "reddit",
+  github: "github",
+  // Add more providers as Supabase supports them
 };
 
 const BadgesPage = () => {
@@ -53,6 +48,7 @@ const BadgesPage = () => {
   const zoneParam = searchParams.get("activeZone") as Zone | null;
 
   const { consoUser, updateConsoUser } = useConsoUser();
+  const processedSessionRef = useRef<string | null>(null);
 
   const [activeZone, setActiveZone] = useState<Zone>(() => {
     if (
@@ -64,308 +60,210 @@ const BadgesPage = () => {
     return "social";
   });
 
-  // Handle OAuth callback
+  // Handle OAuth callback with Supabase auth state listener
   useEffect(() => {
-    const authStatus = searchParams.get("auth");
-    const error = searchParams.get("error");
+    const processSession = async (session: Session | null) => {
+      if (!session?.user) return;
 
-    if (authStatus === "success") {
-      console.log("Google OAuth authentication successful!");
+      const sessionId = session.user.id;
 
-      // Update conso user after successful auth
-      updateConsoUser({
-        badges: consoUser.badges + 1,
-        zapsScore: consoUser.zapsScore + 1000,
-        connectedAccounts: [...consoUser.connectedAccounts, "Google"],
-      });
+      // Skip if we've already processed this session
+      if (processedSessionRef.current === sessionId) {
+        console.log("Session already processed, skipping");
+        return;
+      }
 
-      // Clean up URL
-      router.replace("/badges");
-    }
+      // Mark this session as processed
+      processedSessionRef.current = sessionId;
 
-    if (error) {
-      console.error("Google OAuth authentication error:", error);
-      // Clean up URL
-      router.replace("/badges");
-    }
-  }, [searchParams, router, consoUser, updateConsoUser]);
+      // Get all connected providers from app_metadata
+      const providers = session.user.app_metadata?.providers || [];
+      const currentProvider = session.user.app_metadata?.provider;
 
-  const socialBadges = [
-    {
-      id: "youtube",
-      icon: <YouTubeIcon />,
-      title: "YouTube",
-      description:
-        "Connect your channel to highlight videos, playlists, and subs.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6D5F5]",
-      disabled: false,
-    },
-    {
-      id: "twitch",
-      icon: <TwitchIcon />,
-      title: "Twitch",
-      description:
-        "Verify your Twitch account to display streams and viewer stats.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5C6D5]",
-      disabled: false,
-    },
-    {
-      id: "x",
-      icon: <XIcon />,
-      title: "X(formally twitter)",
-      description:
-        "Link your X profile to showcase posts, follower and engagement.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: false,
-    },
-    {
-      id: "discord",
-      icon: <DiscordIcon />,
-      title: "Discord",
-      description:
-        "Connect Discord to display community roles and participation.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6C6F5]",
-    },
-    {
-      id: "reddit",
-      icon: <RedditIcon />,
-      title: "Reddit",
-      description:
-        "Verify your Reddit account to display karma and community activity.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
-      disabled: false,
-    },
-    {
-      id: "farcaster",
-      icon: <FarcasterIcon />,
-      title: "Farcaster",
-      description: "Verify your Farcaster account to showcase pages and posts.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: true,
-    },
-    {
-      id: "instagram",
-      icon: <InstagramIcon />,
-      title: "Instagram",
-      description:
-        "Link your Instagram to highlight reels, posts, and followers.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#C6E5F5]",
-      disabled: true,
-    },
+      console.log(`Session detected. Current provider: ${currentProvider}`);
+      console.log(`All connected providers:`, providers);
 
-    {
-      id: "telegram",
-      icon: <TelegramIcon />,
-      title: "Telegram",
-      description:
-        "Verify your Telegram account ownership for professional identity.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#D5E6F5]",
-      disabled: true,
-    },
-  ];
+      const allBadges = [
+        ...socialBadges,
+        ...gamingBadges,
+        ...creativeBadges,
+        ...onchainBadges,
+      ];
 
-  const gamingBadges = [
-    {
-      id: "playstation",
-      icon: <PlaystationIcon />,
-      title: "PlayStation",
-      description:
-        "Connect your PSN account to showcase trophies and gameplay stats.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6D5F5]",
-      disabled: false,
-    },
-    {
-      id: "roblox",
-      icon: <RobloxIcon />,
-      title: "Roblox",
-      description:
-        "Verify your Roblox account to display creations, badges, and game activity.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: false,
-    },
+      // Track new connections for batch update
+      let newBadgesCount = 0;
+      let newZapsScore = 0;
+      const newConnectedAccounts = [...consoUser.connectedAccounts];
+      const newPlatformData = { ...consoUser.platformData };
 
-    {
-      id: "steam",
-      icon: <SteamIcon />,
-      title: "Steam",
-      description: "Link your Steam ID to track games, playtime, and badges.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: false,
-    },
-    {
-      id: "xbox",
-      icon: <XboxIcon />,
-      title: "Xbox",
-      description:
-        "Verify your Xbox Live account to sync achievements and progress.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5C6D5]",
-      disabled: true,
-    },
-    {
-      id: "googleplay",
-      icon: <GooglePlayIcon />,
-      title: "Google Play",
-      description:
-        "Connect Google Play Games for mobile achievements and leaderboards.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
-      disabled: true,
-    },
+      // Process all providers
+      const providersToProcess =
+        providers.length > 0 ? providers : [currentProvider];
 
-    {
-      id: "chess",
-      icon: <ChessIcon />,
-      title: "Chess.com",
-      description:
-        "Sync your Chess.com profile to highlight ratings and matches.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: true,
-    },
-    {
-      id: "epicgames",
-      icon: <EpicGamesIcon />,
-      title: "Epic Games",
-      description:
-        "Link your Epic account to showcase Fortnite and other Epic titles.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: true,
-    },
-    {
-      id: "retroachievements",
-      icon: <RetroachievementsIcon />,
-      title: "RetroAchievements",
-      description: "Connect RA to feature retro game achievements.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: true,
-    },
-  ];
+      for (const provider of providersToProcess) {
+        if (!provider) continue;
 
-  const creativeBadges = [
-    {
-      id: "github",
-      icon: <GithubIcon />,
-      title: "GitHub",
-      description:
-        "Connect your GitHub to showcase repos, commits, and open-source work",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6D5F5]",
-      disabled: false,
-    },
-    {
-      id: "spotify",
-      icon: <SpotifyIcon />,
-      title: "Spotify",
-      description:
-        "Link your Spotify to display playlists, favourites,and listening trends",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5C6D5]",
-      disabled: true,
-    },
-    {
-      id: "medium",
-      icon: <MediumIcon />,
-      title: "Medium",
-      description:
-        "Verify your Medium profile to highlight blogs and followers.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: true,
-    },
-    {
-      id: "substack",
-      icon: <SubstackIcon />,
-      title: "Substack",
-      description:
-        "Connect your Substack to feature newsletters and readership.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
-      disabled: true,
-    },
-  ];
+        // Find the badge from the provider
+        const badgeEntry = Object.entries(PROVIDER_MAP).find(
+          ([, p]) => p === provider
+        );
+        const badgeId = badgeEntry?.[0];
 
-  const onchainBadges = [
-    {
-      id: "suins",
-      icon: <SuiNSIcon />,
-      title: "SuiNS",
-      description:
-        "Connect your SuiNS name to showcase your blockchain identity.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6D5F5]",
-      disabled: false,
-    },
-    {
-      id: "slushwallet",
-      icon: <SlushIcon />,
-      title: "Slush Wallet",
-      description:
-        "Link your Slush Wallet to display on-chain assets and activity.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5C6D5]",
-      disabled: false,
-    },
-    {
-      id: "suiplay",
-      icon: <SuiPlayIcon />,
-      title: "SuiPlay0x1",
-      description:
-        "Verify ownership of your SuiPlay0x1 console for gaming on Sui.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#F5E6C6]",
-      disabled: true,
-    },
-    {
-      id: "suipassport",
-      icon: <SuiPassportIcon />,
-      title: "Sui Passport",
-      description:
-        "Get recognized for all your activities in the Sui ecosystem events.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
-      disabled: true,
-    },
-    {
-      id: "claynosaurz",
-      icon: <ClaynosaurzIcon />,
-      title: "Claynosaurz Holder",
-      description: "Verify ownership of Claynosaurz NFT.",
-      zapReward: 10000,
-      backgroundColor: "bg-[#E6F5D5]",
-      disabled: true,
-    },
-  ];
+        if (!badgeId) {
+          console.log(`No badge mapping for provider: ${provider}`);
+          continue;
+        }
+
+        const connectedBadge = allBadges.find((b) => b.id === badgeId);
+
+        if (connectedBadge) {
+          // Check if already connected
+          const isAlreadyConnected = newConnectedAccounts.includes(
+            connectedBadge.title
+          );
+
+          if (!isAlreadyConnected) {
+            console.log(`New connection detected: ${connectedBadge.title}`);
+            newBadgesCount++;
+            newZapsScore += connectedBadge.zapReward;
+            newConnectedAccounts.push(connectedBadge.title);
+          }
+
+          // Get basic user data from Supabase OAuth session
+          // Provider-specific data might be in identities array
+          const identity = session.user.identities?.find(
+            (id) => id.provider === provider
+          );
+
+          const userData = {
+            email: session.user.email,
+            name:
+              identity?.identity_data?.name || session.user.user_metadata?.name,
+            avatar:
+              identity?.identity_data?.avatar_url ||
+              identity?.identity_data?.picture ||
+              session.user.user_metadata?.avatar_url,
+            username:
+              identity?.identity_data?.user_name ||
+              identity?.identity_data?.preferred_username ||
+              session.user.user_metadata?.user_name,
+            fullName:
+              identity?.identity_data?.full_name ||
+              session.user.user_metadata?.full_name,
+            provider: provider,
+            providerId: identity?.id || session.user.user_metadata?.provider_id,
+            preferredUsername:
+              identity?.identity_data?.preferred_username ||
+              session.user.user_metadata?.preferred_username,
+            picture:
+              identity?.identity_data?.picture ||
+              session.user.user_metadata?.picture,
+            // Additional provider-specific fields
+            ...identity?.identity_data,
+          };
+
+          console.log(`${connectedBadge.title} user data:`, userData);
+
+          // Update platform data (even if already connected, to refresh data)
+          newPlatformData[connectedBadge.title] = userData;
+        }
+      }
+
+      // Batch update all changes at once
+      if (newBadgesCount > 0 || Object.keys(newPlatformData).length > 0) {
+        updateConsoUser({
+          badges: consoUser.badges + newBadgesCount,
+          zapsScore: consoUser.zapsScore + newZapsScore,
+          connectedAccounts: newConnectedAccounts,
+          platformData: newPlatformData,
+        });
+
+        console.log(
+          `Successfully processed ${newBadgesCount} new connection(s) and saved to localStorage`
+        );
+        console.log(`Total connected accounts:`, newConnectedAccounts);
+      }
+
+      // Clean up URL hash if present
+      if (window.location.hash) {
+        setTimeout(() => router.replace("/badges"), 100);
+      }
+    };
+
+    // Listen for auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event);
+
+      if (event === "SIGNED_IN" && session) {
+        await processSession(session);
+      }
+    });
+
+    // Also check current session on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        processSession(session);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => {
+      subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleZoneChange = (zone: Zone) => {
     setActiveZone(zone);
     router.push(`/badges?activeZone=${zone}`);
   };
 
-  const handleUpdateFlow = () => {
-    console.log("Updating platform data");
-    // fetch latest platform data
-  };
-
-  const handleConnectFlow = (badge: Badge) => {
+  const handleConnectFlow = async (badge: Badge) => {
     console.log(`Connecting ${badge.title}`);
-    console.log("Initiating Google OAuth flow...");
 
-    // Redirect to our OAuth authorization endpoint
-    router.push("/api/auth/google/authorize");
+    // Check if platform is supported by Supabase OAuth
+    const provider = PROVIDER_MAP[badge.id];
+
+    if (!provider) {
+      console.error(
+        `OAuth provider not configured for ${badge.title}. Please add to PROVIDER_MAP.`
+      );
+      // For platforms without OAuth, you might want to show a modal or redirect to custom auth
+      return;
+    }
+
+    console.log(`Initiating ${provider} OAuth flow...`);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: provider as Provider,
+        options: {
+          redirectTo: `${window.location.origin}/badges`,
+          skipBrowserRedirect: false,
+        },
+      });
+
+      if (error) {
+        console.error("Error initiating OAuth flow:", error.message);
+        alert(
+          `OAuth Error: ${error.message}. Make sure ${provider} is enabled in Supabase dashboard.`
+        );
+      } else if (data.url) {
+        console.log("OAuth flow initiated, redirecting to provider...");
+        console.log("OAuth URL:", data.url);
+        // Browser will redirect automatically
+      } else {
+        console.error("No OAuth URL returned from Supabase");
+        alert(
+          `OAuth failed: No redirect URL. Make sure ${provider} is enabled in Supabase dashboard.`
+        );
+      }
+    } catch (err) {
+      console.error("Unexpected error during OAuth:", err);
+      alert(`Unexpected error: ${err}`);
+    }
   };
 
   return (
@@ -411,7 +309,6 @@ const BadgesPage = () => {
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
                 onConnect={() => handleConnectFlow(badge)}
-                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>
@@ -420,16 +317,18 @@ const BadgesPage = () => {
         {activeZone === "gaming" && (
           <BadgeSection title="Showcase your gaming achievements and stats">
             {gamingBadges.map((badge) => (
-              <BadgeCard
+              <GamingBadgeCard
                 key={badge.id}
                 icon={badge.icon}
                 title={badge.title}
+                isConnected={consoUser.connectedAccounts.includes(badge.title)}
                 description={badge.description}
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
-                onConnect={() => handleConnectFlow(badge)}
-                onUpdate={() => handleUpdateFlow()}
+                onConnect={() => {
+                  console.log("Gaming badge connect clicked");
+                }}
               />
             ))}
           </BadgeSection>
@@ -442,12 +341,12 @@ const BadgesPage = () => {
                 key={badge.id}
                 icon={badge.icon}
                 title={badge.title}
+                isConnected={consoUser.connectedAccounts.includes(badge.title)}
                 description={badge.description}
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
                 onConnect={() => handleConnectFlow(badge)}
-                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>
@@ -460,12 +359,14 @@ const BadgesPage = () => {
                 key={badge.id}
                 icon={badge.icon}
                 title={badge.title}
+                isConnected={consoUser.connectedAccounts.includes(badge.title)}
                 description={badge.description}
                 zapReward={badge.zapReward}
                 isDisabled={badge.disabled}
                 backgroundColor={badge.backgroundColor}
+                skipModal={badge.skipModal}
+                customButtonText={badge.customButtonText}
                 onConnect={() => handleConnectFlow(badge)}
-                onUpdate={() => handleUpdateFlow()}
               />
             ))}
           </BadgeSection>
