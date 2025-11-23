@@ -18,8 +18,8 @@ A unified 5D Consumer Passport from your social, gaming, creative, and on-chain 
 
 ## Links
 
-- [Deployed URL](https://conso.xyz)
-- [GitHub Repository](https://github.com/yourusername/conso-app)
+- [Deployed URL](https://haulout.conso.xyz)
+- [GitHub Repository](https://github.com/conso-labs/conso-app)
 - [Twitter](https://x.com/conso_xyz)
 
 ## Sponsors Tech Stack
