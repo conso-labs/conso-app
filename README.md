@@ -18,7 +18,7 @@ A unified 5D Consumer Passport from your social, gaming, creative, and on-chain 
 ## Links
 
 - [Deployed URL](https://haulout.conso.xyz)
-- [Demo Video]()
+- [Demo Video](https://youtu.be/nbgKNl1gqH4)
 - [GitHub Repository](https://github.com/conso-labs/conso-app)
 - [Twitter](https://x.com/conso_xyz)
 
