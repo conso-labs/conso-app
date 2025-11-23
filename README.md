@@ -12,15 +12,16 @@ A unified 5D Consumer Passport from your social, gaming, creative, and on-chain 
 
 1. [All Links](#links)
 2. [Sponsors Tech Stack](#sponsors-tech-stack)
-3. [App Demo](#app-demo-screenshots)
 4. [Future Vision](#future-vision)
 5. [Team](#team)
 
 ## Links
 
 - [Deployed URL](https://haulout.conso.xyz)
+- [Demo Video]()
 - [GitHub Repository](https://github.com/conso-labs/conso-app)
 - [Twitter](https://x.com/conso_xyz)
+
 
 ## Sponsors Tech Stack
 
@@ -29,16 +30,6 @@ A unified 5D Consumer Passport from your social, gaming, creative, and on-chain 
 - Seal
 - Social APIs and OAuth
 
-## App Demo Screenshots
-
-**_Landing Page_**
-![Landing Page](/public/images/svgs/landingpage/main-screen.svg)
-
-**_Dashboard_**
-![Dashboard](/public/images/svgs/homepage/bg.svg)
-
-**_Badges & Zones_**
-![Badges](/public/images/svgs/badges/bg.svg)
 
 ## Future Vision
 
