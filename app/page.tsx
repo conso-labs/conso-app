@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +10,10 @@ import {
 import { solway, inter } from "./layout";
 import HeadingText from "@/components/common/HeadingText";
 import Text from "@/components/common/Text";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Navigation */}
@@ -39,7 +42,7 @@ export default function Home() {
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a
-              href="#"
+              href="/login"
               style={{
                 fontFamily: "Inter",
                 fontWeight: 500,
@@ -61,7 +64,7 @@ export default function Home() {
                   background: "rgba(222, 222, 222, 1)",
                   position: "absolute",
                   top: "-10px",
-                  left: "80%",
+                  left: "100%",
                   transform: "translateX(-50%)",
                   display: "flex",
                   alignItems: "center",
@@ -97,6 +100,7 @@ export default function Home() {
                 Smart campaigns
               </a>
             </div>
+
             <button
               style={{
                 background: "rgba(122, 168, 254, 1)",
@@ -112,6 +116,7 @@ export default function Home() {
                 padding: "8px 16px",
               }}
               className={solway.className}
+              onClick={() => router.push("/login")}
             >
               Go to app
             </button>
@@ -202,6 +207,7 @@ export default function Home() {
                 padding: "12px 32px",
               }}
               className={solway.className}
+              onClick={() => router.push("/login")}
             >
               Get Started
             </button>
@@ -220,6 +226,7 @@ export default function Home() {
                 padding: "12px 32px",
               }}
               className={solway.className}
+              onClick={() => router.push("/login")}
             >
               Mint your Passport
             </button>
@@ -807,9 +814,9 @@ export default function Home() {
               textShadow: "4px 4px 0px rgba(19, 19, 19, 1)",
             }}
           >
-            Our Backers & Partners
+            Our Partners
           </h2>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center gap-4">
             <div
               className="flex items-center justify-center"
               style={{
@@ -823,6 +830,46 @@ export default function Home() {
             >
               <Image
                 src="/images/svgs/landingpage/walrus.svg"
+                alt="Walrus"
+                width={200}
+                height={60}
+                className="w-auto h-auto max-w-full max-h-full"
+              />
+            </div>
+
+            <div
+              className="flex items-center justify-center p-2"
+              style={{
+                width: "246.45px",
+                height: "78.12px",
+                border: "1.53px solid rgba(19, 19, 19, 1)",
+                borderRadius: "12px",
+                background: "white",
+                opacity: 1,
+              }}
+            >
+              <Image
+                src="/images/svgs/landingpage/holo.svg"
+                alt="Walrus"
+                width={200}
+                height={60}
+                className="w-auto h-auto max-w-full max-h-full"
+              />
+            </div>
+
+            <div
+              className="flex items-center justify-center"
+              style={{
+                width: "246.45px",
+                height: "78.12px",
+                border: "1.53px solid rgba(19, 19, 19, 1)",
+                borderRadius: "12px",
+                background: "white",
+                opacity: 1,
+              }}
+            >
+              <Image
+                src="/images/svgs/landingpage/vana.svg"
                 alt="Walrus"
                 width={200}
                 height={60}
@@ -906,7 +953,11 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-3">
-              <a href="#" className="text-white/80 hover:text-white transition">
+              <a
+                href="https://x.com/conso_xyz"
+                className="text-white/80 hover:text-white transition"
+                target="__blank"
+              >
                 <Image
                   src="/images/svgs/landingpage/x.svg"
                   alt="X"
@@ -914,14 +965,14 @@ export default function Home() {
                   height={30}
                 />
               </a>
-              <a href="#" className="text-white/80 hover:text-white transition">
+              {/* <a href="#" className="text-white/80 hover:text-white transition">
                 <Image
                   src="/images/svgs/landingpage/telegram.svg"
                   alt="Telegram"
                   width={30}
                   height={30}
                 />
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -936,7 +987,7 @@ export default function Home() {
                 color: "rgba(165, 165, 165, 1)",
               }}
             >
-              © Copyright 2024. All Rights Reserved.
+              © Copyright 2025. All Rights Reserved.
             </div>
             <div
               className="flex items-center gap-4"
