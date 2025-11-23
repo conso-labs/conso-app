@@ -10,7 +10,6 @@ interface BadgeCardProps {
   description: string;
   zapReward: number;
   onConnect?: () => void;
-  onUpdate?: () => void;
   isConnected?: boolean;
   isDisabled?: boolean;
   backgroundColor?: string;
@@ -30,7 +29,6 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
   description,
   zapReward,
   onConnect,
-  onUpdate,
   isConnected = false,
   isDisabled = false,
   backgroundColor = "bg-[#E6D5F5]",
@@ -59,11 +57,6 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
 
   const handleModalConnect = () => {
     onConnect?.();
-    // setIsModalOpen(false);
-  };
-
-  const handleModalUpdate = () => {
-    onUpdate?.();
     // setIsModalOpen(false);
   };
 
@@ -137,7 +130,6 @@ const BadgeCard: React.FC<BadgeCardProps> = ({
         zapReward={zapReward}
         isConnected={isConnected}
         onConnect={handleModalConnect}
-        onUpdate={handleModalUpdate}
       />
     </>
   );

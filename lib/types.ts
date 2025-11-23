@@ -6,4 +6,5 @@ export type ConsoUser = {
   zapsScore: number;
   consumerPercentile: number;
   platformData?: Record<string, object>;
+  userData?: Record<string, object>; // Stores user-input data (e.g., YouTube) that persists across OAuth syncs
 };

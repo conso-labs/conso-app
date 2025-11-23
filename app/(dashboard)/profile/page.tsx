@@ -8,15 +8,7 @@ import { useConsoUser } from "@/contexts/ConsoUserContext";
 const ProfilePage = () => {
   const { consoUser } = useConsoUser();
 
-  // Platform icons data
-  const platforms = [
-    { name: "X", icon: "𝕏", bgColor: "bg-gray-900" },
-    { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
-    { name: "Slush", icon: "🧊", bgColor: "bg-blue-400" },
-    { name: "X", icon: "𝕏", bgColor: "bg-gray-900" },
-    { name: "MetaMask", icon: "🦊", bgColor: "bg-orange-500" },
-    { name: "Slush", icon: "🧊", bgColor: "bg-blue-400" },
-  ];
+  const platforms = consoUser.connectedAccounts;
 
   return (
     <div className="relative overflow-hidden">

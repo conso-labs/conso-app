@@ -42,7 +42,7 @@ const GamingBadgeCard: React.FC<BadgeCardProps> = ({
   platformDetails = {
     time: "15 Sec",
     price: "Free",
-    type: "Secure Oauth",
+    type: "Manual Verification",
   },
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,7 +68,7 @@ const GamingBadgeCard: React.FC<BadgeCardProps> = ({
       // New connection - add to connected accounts, update badge count and zaps
       updateConsoUser({
         badges: consoUser.badges + 1,
-        zapsScore: consoUser.zapsScore + zapReward,
+        zapsScore: consoUser.zapsScore + 1000,
         connectedAccounts: [...consoUser.connectedAccounts, title],
         platformData: {
           ...consoUser.platformData,
@@ -96,12 +96,11 @@ const GamingBadgeCard: React.FC<BadgeCardProps> = ({
     onConnect?.(username);
   };
 
-  const handleGamingPlatfromVerify = () => {
-    console.log(`Verifying ${title}`);
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleGamingPlatfromVerify = (verificationData?: any) => {
+    console.log(`Verifying ${title}`, verificationData);
 
-    // api call here with checks
-
-    // Set verified status to true in platformData
+    // Set verified status to true in platformData and save verification data
     updateConsoUser({
       platformData: {
         ...consoUser.platformData,
@@ -109,6 +108,7 @@ const GamingBadgeCard: React.FC<BadgeCardProps> = ({
           ...(consoUser.platformData?.[title] || {}),
           verified: true,
           verifiedAt: new Date().toISOString(),
+          data: verificationData, // Save the verification data (badges, userId, etc.)
         },
       },
     });
@@ -192,6 +192,20 @@ const GamingBadgeCard: React.FC<BadgeCardProps> = ({
               //@ts-expect-error
               consoUser.platformData[title].verified
             : false
+        }
+        platformUsername={
+          consoUser.platformData?.[title]
+            ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-expect-error
+              consoUser.platformData[title].username
+            : ""
+        }
+        platformData={
+          consoUser.platformData?.[title]
+            ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-expect-error
+              consoUser.platformData[title].data
+            : null
         }
         onConnect={handleModalConnect}
         onVerify={handleGamingPlatfromVerify}

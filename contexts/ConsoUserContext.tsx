@@ -56,7 +56,7 @@ export const ConsoUserProvider: React.FC<{ children: ReactNode }> = ({
             "..." +
             currentAccount.address.slice(-4),
           connectedAccounts: ["Slush Wallet"],
-          badges: 0,
+          badges: 1,
           zapsScore: 0,
           consumerPercentile: 0,
         };

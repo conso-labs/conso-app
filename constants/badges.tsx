@@ -255,7 +255,7 @@ export const onchainBadges = [
       "Connect your SuiNS name to showcase your blockchain identity.",
     zapReward: 10000,
     backgroundColor: "bg-[#E6D5F5]",
-    disabled: false,
+    disabled: true,
     skipModal: true,
     customButtonText: "Claim Badge",
   },

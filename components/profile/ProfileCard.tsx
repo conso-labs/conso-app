@@ -2,13 +2,6 @@ import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-interface PlatformIcon {
-  name: string;
-  icon: string;
-  bgColor: string;
-  iconColor?: string;
-}
-
 interface ProfileCardProps {
   user: {
     name: string;
@@ -18,7 +11,7 @@ interface ProfileCardProps {
   zaps: number;
   badges: number;
   consumerScore: number;
-  platforms?: PlatformIcon[];
+  platforms?: string[];
   className?: string;
 }
 
@@ -27,7 +20,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   zaps,
   badges = 0,
   consumerScore = 0,
-  platforms = [],
+  platforms,
   className,
 }) => {
   return (
@@ -172,7 +165,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             letterSpacing: "-1%",
           }}
         >
-          <span className="text-white">8 Nov 2025</span>
+          <span className="text-white">
+            {new Intl.DateTimeFormat("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }).format(new Date())}
+          </span>
           <span style={{ color: "rgba(196, 196, 196, 1)" }}>
             (updated every week)
           </span>
@@ -356,49 +355,49 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         {/* Platform Icons in bubbles positioned in 3D space */}
         <div className="absolute inset-0 flex items-center justify-center">
-          {platforms.slice(0, 6).map((platform, index) => {
+          {platforms?.slice(0, 6).map((platform, index) => {
             const positions = [
               {
                 top: "18%",
                 left: "35%",
                 transform: "scale(1.0)",
                 width: 80,
-                iconWidth: 32,
+                iconWidth: 40,
               },
               {
                 top: "15%",
                 left: "70%",
                 transform: "scale(1.0)",
                 width: 80,
-                iconWidth: 32,
+                iconWidth: 60,
               },
               {
                 top: "35%",
                 left: "85%",
                 transform: "scale(1.0)",
                 width: 80,
-                iconWidth: 32,
+                iconWidth: 60,
               },
               {
                 top: "38%",
                 left: "15%",
                 transform: "scale(1.0)",
                 width: 80,
-                iconWidth: 32,
+                iconWidth: 60,
               },
               {
                 top: "60%",
                 left: "45%",
                 transform: "scale(1.0)",
                 width: 80,
-                iconWidth: 32,
+                iconWidth: 60,
               },
               {
                 top: "70%",
                 left: "75%",
                 transform: "scale(1.0)",
                 width: 80,
-                iconWidth: 32,
+                iconWidth: 60,
               },
             ];
 
@@ -407,11 +406,33 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             // Map platform names to icon file names
             const getIconPath = (name: string) => {
               const iconMap: { [key: string]: string } = {
-                X: "x.svg",
-                MetaMask: "metamask.svg",
-                Slush: "slush.svg",
+                YouTube: "youtube.svg",
+                Twitch: "twitch.svg",
+                Discord: "discord.svg",
+                GitHub: "github.svg",
+                Reddit: "reddit.svg",
+                "X(formally twitter)": "x.svg",
+                Farcaster: "farcaster.svg",
+                Instagram: "instagram.svg",
+                Telegram: "telegram.svg",
+                Roblox: "roblox.svg",
+                PlayStation: "playstation.svg",
+                Steam: "steam.svg",
+                Xbox: "xbox.svg",
+                "Google Play": "google-play.svg",
+                "Chess.com": "chess.svg",
+                "Epic Games": "epic-games.svg",
+                RetroAchievements: "retroachievements.svg",
+                Spotify: "spotify.svg",
+                Medium: "medium.svg",
+                Substack: "substack.svg",
+                SuiNS: "suins.svg",
+                "Slush Wallet": "slush.svg",
+                SuiPlay0x1: "suiplay.svg",
+                "Sui Passport": "sui-passport.svg",
+                "Claynosaurz Holder": "claynosaurz.svg",
               };
-              return iconMap[name] || "metamask.svg";
+              return iconMap[name] || "default.svg";
             };
 
             return (
@@ -437,8 +458,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Image
-                      src={`/images/icons/${getIconPath(platform.name)}`}
-                      alt={platform.name}
+                      src={`/images/icons/${getIconPath(platform)}`}
+                      alt={platform}
                       width={position.iconWidth}
                       height={position.iconWidth}
                     />
@@ -540,7 +561,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             letterSpacing: "-1%",
           }}
         >
-          zaps.conso.xyz
+          Powered by Walrus
         </span>
       </div>
     </div>

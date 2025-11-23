@@ -125,7 +125,7 @@ const BadgesPage = () => {
           if (!isAlreadyConnected) {
             console.log(`New connection detected: ${connectedBadge.title}`);
             newBadgesCount++;
-            newZapsScore += connectedBadge.zapReward;
+            newZapsScore += 1000;
             newConnectedAccounts.push(connectedBadge.title);
           }
 
@@ -158,6 +158,12 @@ const BadgesPage = () => {
             picture:
               identity?.identity_data?.picture ||
               session.user.user_metadata?.picture,
+            // Store provider access token for API calls (if this was the active session)
+            // Note: provider_token is only available for the most recent OAuth sign-in
+            provider_access_token:
+              session.user.app_metadata?.provider === provider
+                ? session.provider_token
+                : undefined,
             // Additional provider-specific fields
             ...identity?.identity_data,
           };
@@ -366,7 +372,9 @@ const BadgesPage = () => {
                 backgroundColor={badge.backgroundColor}
                 skipModal={badge.skipModal}
                 customButtonText={badge.customButtonText}
-                onConnect={() => handleConnectFlow(badge)}
+                onConnect={() => {
+                  console.log("Onchain badge connect clicked");
+                }}
               />
             ))}
           </BadgeSection>

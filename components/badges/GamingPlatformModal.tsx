@@ -4,7 +4,16 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import ConsoButton from "../common/ConsoButton";
-import { getPlatformContent, PlatformName } from "@/constants/platformData";
+import { getPlatformContent } from "@/constants/platformData";
+
+interface RobloxVerificationData {
+  userId: number;
+  username: string;
+  description: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  badges: any[];
+  verified: boolean;
+}
 
 interface PlatformModalProps {
   isOpen: boolean;
@@ -21,7 +30,10 @@ interface PlatformModalProps {
   isConnected?: boolean;
   isVerified?: boolean;
   onConnect?: (username: string) => void;
-  onVerify?: () => void;
+  onVerify?: (data?: RobloxVerificationData) => void;
+  platformUsername?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  platformData?: any;
 }
 
 const GamingPlatformModal: React.FC<PlatformModalProps> = ({
@@ -33,8 +45,16 @@ const GamingPlatformModal: React.FC<PlatformModalProps> = ({
   isVerified = false,
   onConnect,
   onVerify,
+  platformUsername = "",
+  platformData,
 }) => {
   const [username, setUsername] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationError, setVerificationError] = useState<string | null>(
+    null
+  );
+  const verificationCode = "CONSO-12345";
 
   if (!isOpen) return null;
 
@@ -43,7 +63,56 @@ const GamingPlatformModal: React.FC<PlatformModalProps> = ({
   const handleConnect = () => {
     if (username.trim()) {
       onConnect?.(username.trim());
-      setUsername(""); // Clear input after connecting
+    }
+  };
+
+  const handleCopyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(verificationCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  const handleVerifyRoblox = async () => {
+    // Use platformUsername from consoUser context if available, otherwise use local state
+    const usernameToVerify = platformUsername || username;
+
+    if (!usernameToVerify) {
+      setVerificationError("Username is required");
+      return;
+    }
+
+    setIsVerifying(true);
+    setVerificationError(null);
+
+    try {
+      const response = await fetch(
+        `/api/get-roblox-data?username=${encodeURIComponent(
+          usernameToVerify
+        )}&verificationCode=${encodeURIComponent(verificationCode)}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setVerificationError(
+          data.error || "Verification failed. Please try again."
+        );
+        setIsVerifying(false);
+        return;
+      }
+
+      // Call the onVerify callback to update parent state with the data
+      onVerify?.(data.data);
+
+      setIsVerifying(false);
+    } catch (error) {
+      console.error("Verification error:", error);
+      setVerificationError("An error occurred during verification");
+      setIsVerifying(false);
     }
   };
 
@@ -208,13 +277,168 @@ const GamingPlatformModal: React.FC<PlatformModalProps> = ({
               </div>
 
               {/* User Stats & Details */}
-              <h3 className="text-md font-bold text-gray-900 mb-3">
-                Profile Stats
-              </h3>
-              <p className="text-sm text-gray-700 mb-3">
-                Your gaming profile is now connected and verified. Stats and
-                achievements will be displayed on your CONSO profile.
-              </p>
+              {platform.name === "Roblox" && platformData ? (
+                <>
+                  <h3 className="text-md font-bold text-gray-900 mb-3">
+                    Account Overview
+                  </h3>
+                  <div className="space-y-3 mb-4">
+                    <div className="bg-white rounded-xl border-2 border-black p-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-xs text-gray-600 mb-1">Username</p>
+                          <p className="text-sm font-bold text-gray-900">
+                            {platformData.username || "N/A"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600 mb-1">User ID</p>
+                          <p className="text-sm font-bold text-gray-900">
+                            {platformData.userId || "N/A"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl border-2 border-black p-3">
+                      <p className="text-xs text-gray-600 mb-1">Total Badges</p>
+                      <p className="text-lg font-bold text-gray-900">
+                        {platformData.badges?.length || 0}
+                      </p>
+                    </div>
+
+                    {platformData.badges && platformData.badges.length > 0 && (
+                      <div className="bg-white rounded-xl border-2 border-black p-3">
+                        <p className="text-xs text-gray-600 mb-3">
+                          Your Badges ({platformData.badges.length})
+                        </p>
+                        <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
+                          {platformData.badges
+                            .slice(0, 10)
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            .map((badge: any, idx: number) => (
+                              <div
+                                key={badge.id || idx}
+                                className="bg-gradient-to-br from-gray-50 to-white rounded-lg border-2 border-gray-200 p-3 hover:border-blue-400 transition-colors"
+                              >
+                                {/* Badge Header */}
+                                <div className="flex items-start gap-3 mb-2">
+                                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center text-2xl shrink-0 border-2 border-yellow-300">
+                                    🏆
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-bold text-sm text-gray-900 mb-0.5">
+                                      {badge.displayName || badge.name}
+                                    </h4>
+                                    {badge.displayDescription && (
+                                      <p className="text-xs text-gray-600 line-clamp-2">
+                                        {badge.displayDescription}
+                                      </p>
+                                    )}
+                                  </div>
+                                  {badge.enabled && (
+                                    <div className="px-2 py-0.5 bg-green-100 border border-green-300 rounded text-[9px] font-semibold text-green-700">
+                                      ACTIVE
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Game/Universe Info */}
+                                {badge.awardingUniverse?.name && (
+                                  <div className="bg-blue-50 rounded-md px-2 py-1.5 mb-2 border border-blue-200">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="text-xs">🎮</span>
+                                      <span className="text-xs font-semibold text-gray-700">
+                                        {badge.awardingUniverse.name}
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Statistics Grid */}
+                                {badge.statistics && (
+                                  <div className="grid grid-cols-3 gap-2 mb-2">
+                                    <div className="bg-purple-50 rounded-md p-1.5 border border-purple-200">
+                                      <p className="text-[9px] text-gray-600 mb-0.5">
+                                        Total Awarded
+                                      </p>
+                                      <p className="text-xs font-bold text-gray-900">
+                                        {badge.statistics.awardedCount?.toLocaleString() ||
+                                          "N/A"}
+                                      </p>
+                                    </div>
+                                    <div className="bg-orange-50 rounded-md p-1.5 border border-orange-200">
+                                      <p className="text-[9px] text-gray-600 mb-0.5">
+                                        Win Rate
+                                      </p>
+                                      <p className="text-xs font-bold text-gray-900">
+                                        {badge.statistics.winRatePercentage !== undefined
+                                          ? `${(badge.statistics.winRatePercentage * 100).toFixed(1)}%`
+                                          : "N/A"}
+                                      </p>
+                                    </div>
+                                    <div className="bg-green-50 rounded-md p-1.5 border border-green-200">
+                                      <p className="text-[9px] text-gray-600 mb-0.5">
+                                        24h Awards
+                                      </p>
+                                      <p className="text-xs font-bold text-gray-900">
+                                        {badge.statistics.pastDayAwardedCount?.toLocaleString() ||
+                                          "0"}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Creator & Metadata */}
+                                <div className="flex items-center justify-between text-[10px] text-gray-500 pt-2 border-t border-gray-200">
+                                  {badge.creator && (
+                                    <div className="flex items-center gap-1">
+                                      <span>By:</span>
+                                      <span className="font-semibold text-gray-700">
+                                        {badge.creator.name}
+                                      </span>
+                                      <span className="px-1 py-0.5 bg-gray-200 rounded text-[8px]">
+                                        {badge.creator.type}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {badge.created && (
+                                    <div className="text-gray-500">
+                                      {new Date(
+                                        badge.created
+                                      ).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        year: "numeric",
+                                      })}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+
+                          {platformData.badges.length > 10 && (
+                            <div className="text-center py-2">
+                              <p className="text-xs text-gray-600 font-semibold">
+                                + {platformData.badges.length - 10} more badges
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h3 className="text-md font-bold text-gray-900 mb-3">
+                    Profile Stats
+                  </h3>
+                  <p className="text-sm text-gray-700 mb-3">
+                    Your gaming profile is now connected and verified. Stats and
+                    achievements will be displayed on your CONSO profile.
+                  </p>
+                </>
+              )}
 
               {/* Benefits */}
               <div className="mt-4">
@@ -360,35 +584,256 @@ const GamingPlatformModal: React.FC<PlatformModalProps> = ({
               </div>
             </div>
           ) : (
-            <div className="bg-gray-50 rounded-2xl border-2 border-black p-4 mb-6">
-              <p className="text-sm text-gray-700 mb-3">
-                {platformContent?.activity.description ||
-                  `Connect your ${platform.name} account to unlock:`}
-              </p>
-              <ul className="space-y-2">
-                {platformContent?.activity.benefits.map((benefit, index) => (
-                  <li
-                    key={index}
-                    className="text-sm text-gray-700 flex items-start"
-                  >
-                    <span className="mr-2">•</span>
-                    <span>{benefit}</span>
-                  </li>
-                )) || (
-                  <>
-                    <li className="text-sm text-gray-700 flex items-start">
-                      <span className="mr-2">•</span>
-                      <span>
-                        Channel Overview, Engagement & Audience Insights
-                      </span>
-                    </li>
-                    <li className="text-sm text-gray-700 flex items-start">
-                      <span className="mr-2">•</span>
-                      <span>CONSO Reputation Badges + ZAP Missions</span>
-                    </li>
-                  </>
-                )}
-              </ul>
+            <div className="bg-blue-50 rounded-2xl border-2 border-black p-4 h-130 overflow-y-auto">
+              {/* Connected - Pending Verification Section */}
+              {platform.name === "Roblox" ? (
+                <>
+                  <div className="flex items-center gap-3 mb-4 pb-4 border-b-2 border-blue-300">
+                    <div className="w-12 h-12 bg-blue-300 rounded-full flex items-center justify-center border-2 border-black">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M12 6v6l4 2"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        Verify Your Account
+                      </h3>
+                      <p className="text-sm text-gray-700">
+                        Complete the verification to connect your Roblox account
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Verification Instructions */}
+                  <div className="mb-4">
+                    <h3 className="text-md font-bold text-gray-900 mb-3">
+                      Verification Steps
+                    </h3>
+                    <ol className="space-y-3 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold text-blue-600 shrink-0">
+                          1.
+                        </span>
+                        <span>Copy your unique verification code below</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold text-blue-600 shrink-0">
+                          2.
+                        </span>
+                        <span>
+                          Open your Roblox profile and navigate to:{" "}
+                          <span className="font-semibold">
+                            Profile → Edit Profile → About / Description
+                          </span>
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold text-blue-600 shrink-0">
+                          3.
+                        </span>
+                        <span>
+                          Paste the verification code exactly as shown into your
+                          Bio
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold text-blue-600 shrink-0">
+                          4.
+                        </span>
+                        <span>Return to CONSO and click the Verify button</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold text-blue-600 shrink-0">
+                          5.
+                        </span>
+                        <span>
+                          Once verified, you may delete the code from your Bio
+                        </span>
+                      </li>
+                    </ol>
+                  </div>
+
+                  {/* Verification Code Box */}
+                  <div className="bg-white rounded-xl border-3 border-black p-4 mb-4">
+                    <label className="text-xs font-semibold text-gray-600 mb-2 block">
+                      YOUR VERIFICATION CODE
+                    </label>
+                    <div className="bg-gray-50 rounded-lg border-2 border-gray-300 p-3 mb-3">
+                      <code className="text-lg font-mono font-bold text-gray-900 break-all">
+                        {verificationCode}
+                      </code>
+                    </div>
+                    <button
+                      onClick={handleCopyCode}
+                      className={cn(
+                        "w-full px-4 py-2 rounded-lg border-2 border-black font-semibold text-sm transition-all flex items-center justify-center gap-2",
+                        copied
+                          ? "bg-green-100 hover:bg-green-200"
+                          : "bg-blue-100 hover:bg-blue-200"
+                      )}
+                    >
+                      {copied ? (
+                        <>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13 4L6 11L3 8"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="5"
+                              y="5"
+                              width="9"
+                              height="9"
+                              rx="1"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            />
+                            <path
+                              d="M3 11V3a1 1 0 011-1h8"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                          Copy Code
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Important Notice */}
+                  <div className="bg-yellow-50 rounded-xl border-2 border-yellow-300 p-3">
+                    <div className="flex items-start gap-2">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="shrink-0 mt-0.5"
+                      >
+                        <path
+                          d="M10 6v4m0 4h.01M10 18a8 8 0 100-16 8 8 0 000 16z"
+                          stroke="#D97706"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <div className="text-xs text-gray-700">
+                        <p className="font-semibold text-gray-900 mb-1">
+                          Safe & Secure Verification
+                        </p>
+                        <p>
+                          This is a read-only verification method. No Roblox
+                          login or access permissions are required. We only
+                          verify account ownership through your public profile.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Error Message */}
+                  {verificationError && (
+                    <div className="bg-red-50 rounded-xl border-2 border-red-300 p-3 mt-4">
+                      <div className="flex items-start gap-2">
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="shrink-0 mt-0.5"
+                        >
+                          <path
+                            d="M10 6v4m0 4h.01M10 18a8 8 0 100-16 8 8 0 000 16z"
+                            stroke="#DC2626"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="text-xs text-red-700">
+                          <p className="font-semibold text-red-900 mb-1">
+                            Verification Failed
+                          </p>
+                          <p>{verificationError}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-gray-700 mb-3">
+                    {platformContent?.activity.description ||
+                      `Connect your ${platform.name} account to unlock:`}
+                  </p>
+                  <ul className="space-y-2">
+                    {platformContent?.activity.benefits.map(
+                      (benefit, index) => (
+                        <li
+                          key={index}
+                          className="text-sm text-gray-700 flex items-start"
+                        >
+                          <span className="mr-2">•</span>
+                          <span>{benefit}</span>
+                        </li>
+                      )
+                    ) || (
+                      <>
+                        <li className="text-sm text-gray-700 flex items-start">
+                          <span className="mr-2">•</span>
+                          <span>
+                            Channel Overview, Engagement & Audience Insights
+                          </span>
+                        </li>
+                        <li className="text-sm text-gray-700 flex items-start">
+                          <span className="mr-2">•</span>
+                          <span>CONSO Reputation Badges + ZAP Missions</span>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -452,6 +897,39 @@ const GamingPlatformModal: React.FC<PlatformModalProps> = ({
             </div>
           </div>
 
+          {/* Username Display - Show when connected but not verified */}
+          {isConnected && !isVerified && platformUsername && (
+            <div className="bg-blue-50 rounded-2xl border-2 border-blue-300 p-4 mb-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 bg-blue-300 rounded-full flex items-center justify-center border-2 border-black shrink-0">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 10a3 3 0 100-6 3 3 0 000 6zM10 12c-4 0-7 2-7 4v1h14v-1c0-2-3-4-7-4z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-gray-600 mb-1">
+                    VERIFYING FOR
+                  </p>
+                  <p className="text-base font-bold text-gray-900 break-all">
+                    {platformUsername}
+                  </p>
+                  <p className="text-xs text-gray-600 mt-1">
+                    {platform.name} Username
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Username Input - Only show when not connected */}
           {!isConnected && (
             <div className="mb-4">
@@ -478,18 +956,27 @@ const GamingPlatformModal: React.FC<PlatformModalProps> = ({
               isVerified
                 ? "Verified"
                 : isConnected
-                ? "Verify"
+                ? isVerifying
+                  ? "Verifying..."
+                  : "Verify"
                 : `Connect ${platform.name}`
             }
-            onClick={isConnected ? onVerify : handleConnect}
-            disabled={isVerified}
+            onClick={
+              isConnected
+                ? platform.name === "Roblox"
+                  ? handleVerifyRoblox
+                  : onVerify
+                : handleConnect
+            }
+            disabled={isVerified || isVerifying}
             className={cn(
               " items-center justify-center",
               isVerified
                 ? "bg-green-300 cursor-not-allowed opacity-80"
                 : isConnected
                 ? "bg-gray-100"
-                : "bg-yellow-400"
+                : "bg-yellow-400",
+              isVerifying && "opacity-70 cursor-wait"
             )}
             logo={
               isVerified
