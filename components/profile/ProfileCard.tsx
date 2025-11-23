@@ -1,4 +1,4 @@
-import React from "react";
+import { forwardRef } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -15,21 +15,16 @@ interface ProfileCardProps {
   className?: string;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({
-  user,
-  zaps,
-  badges = 0,
-  consumerScore = 0,
-  platforms,
-  className,
-}) => {
-  return (
-    <div
-      className={cn("flex w-full h-full relative", className)}
-      style={{
-        boxShadow: "2.28px 2.28px 0px 0px rgba(176, 228, 255, 1)",
-      }}
-    >
+const ProfileCard = forwardRef<HTMLDivElement, ProfileCardProps>(
+  ({ user, zaps, badges = 0, platforms, className }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("flex w-full h-full relative", className)}
+        style={{
+          boxShadow: "2.28px 2.28px 0px 0px rgba(176, 228, 255, 1)",
+        }}
+      >
       <style jsx>{`
         @keyframes bounce-float-0 {
           0%,
@@ -566,6 +561,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ProfileCard.displayName = "ProfileCard";
 
 export default ProfileCard;

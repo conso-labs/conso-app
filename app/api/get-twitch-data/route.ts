@@ -113,12 +113,12 @@ class TwitchChannelAnalyzer {
     return response.json();
   }
 
-  async getChannelStats(identifier: string, isUserId: boolean = false): Promise<TwitchChannelStats | null> {
+  async getChannelStats(
+    userId: string
+  ): Promise<TwitchChannelStats | null> {
     try {
       // Get user information
-      const params = isUserId
-        ? { id: identifier }
-        : { login: identifier.toLowerCase() };
+      const params = { id: userId };
 
       const userData = await this.makeRequest("/users", params);
 
@@ -204,15 +204,17 @@ class TwitchChannelAnalyzer {
       let totalDurationSeconds = 0;
       let maxViewCount = 0;
 
-      recentVideos.forEach((video: { view_count: string; duration: string }) => {
-        const views = parseInt(video.view_count);
-        totalViewCount += views;
-        maxViewCount = Math.max(maxViewCount, views);
+      recentVideos.forEach(
+        (video: { view_count: string; duration: string }) => {
+          const views = parseInt(video.view_count);
+          totalViewCount += views;
+          maxViewCount = Math.max(maxViewCount, views);
 
-        // Parse duration (format: 1h2m3s)
-        const duration = this.parseDuration(video.duration);
-        totalDurationSeconds += duration;
-      });
+          // Parse duration (format: 1h2m3s)
+          const duration = this.parseDuration(video.duration);
+          totalDurationSeconds += duration;
+        }
+      );
 
       const streamCount = recentVideos.length;
       const totalHours = totalDurationSeconds / 3600;
@@ -351,10 +353,12 @@ class TwitchChannelAnalyzer {
 // API Route Handler
 export async function GET(req: NextRequest) {
   const requestURL = new URL(req.url as string);
-  const username = requestURL.searchParams.get("username");
   const userId = requestURL.searchParams.get("id");
 
-  console.log("Received Twitch data request for username:", username, "or id:", userId);
+  console.log(
+    "Received Twitch data request for id:",
+    userId
+  );
   try {
     // Get credentials from environment variables
     const clientId = process.env.TWITCH_CLIENT_ID;
@@ -371,11 +375,12 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (!username && !userId) {
+    if (!userId) {
       return NextResponse.json(
         {
           success: false,
-          error: "Username or ID is required. Use ?username=channelname or ?id=userid",
+          error:
+            "User ID is required. Use ?id=userid",
         } as ApiResponse,
         { status: 400 }
       );
@@ -384,10 +389,8 @@ export async function GET(req: NextRequest) {
     // Initialize analyzer
     const analyzer = new TwitchChannelAnalyzer(clientId, clientSecret);
 
-    // Fetch channel stats - prefer userId if both are provided
-    const identifier = userId || username;
-    const isUserId = !!userId;
-    const stats = await analyzer.getChannelStats(identifier!, isUserId);
+    // Fetch channel stats
+    const stats = await analyzer.getChannelStats(userId);
 
     if (!stats) {
       return NextResponse.json(
@@ -424,71 +427,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
-// // POST method for batch processing
-// export async function POST(request: NextRequest) {
-//   try {
-//     const clientId = process.env.TWITCH_CLIENT_ID;
-//     const clientSecret = process.env.TWITCH_CLIENT_SECRET;
-
-//     if (!clientId || !clientSecret) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Twitch API credentials not configured",
-//         },
-//         { status: 500 }
-//       );
-//     }
-
-//     const body = await request.json();
-//     const { usernames } = body;
-
-//     if (!usernames || !Array.isArray(usernames)) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Usernames array is required in request body",
-//         },
-//         { status: 400 }
-//       );
-//     }
-
-//     const analyzer = new TwitchChannelAnalyzer(clientId, clientSecret);
-//     const results = [];
-
-//     for (const username of usernames) {
-//       try {
-//         const stats = await analyzer.getChannelStats(username);
-//         if (stats) {
-//           const score = analyzer.calculateChannelScore(stats);
-//           results.push({
-//             channel_name: stats.channel_name,
-//             channel_stats: stats,
-//             channel_score: score,
-//           });
-//         }
-//       } catch (error) {
-//         console.error(`Error processing ${username}:`, error);
-//         // Continue with other channels
-//       }
-//     }
-
-//     return NextResponse.json(
-//       {
-//         success: true,
-//         data: results,
-//       },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("API Error:", error);
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         error: "Internal server error",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }

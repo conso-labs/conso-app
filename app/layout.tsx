@@ -11,11 +11,8 @@ import { Solway, Inter } from "next/font/google";
 import "./globals.css";
 import "@mysten/dapp-kit/dist/index.css";
 import { ConsoUserProvider } from "@/contexts/ConsoUserContext";
+import { networkConfig } from "@/lib/sui/networkConfig";
 
-// Config options for the networks you want to connect to
-const { networkConfig } = createNetworkConfig({
-  testnet: { url: getFullnodeUrl("testnet") },
-});
 const queryClient = new QueryClient();
 
 export const solway = Solway({
