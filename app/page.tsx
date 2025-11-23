@@ -14,186 +14,317 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white font-sans">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-[#1e3a5f]/95 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <nav
+        className="fixed w-full z-50 flex justify-center"
+        style={{ top: "16px" }}
+      >
+        <div
+          style={{
+            width: "1153px",
+            height: "62px",
+            borderRadius: "18px",
+            background: "rgba(10, 54, 105, 1)",
+            opacity: 1,
+          }}
+          className="px-6 py-4 flex items-center justify-between"
+        >
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-              <span className="text-[#1e3a5f] font-bold text-sm">C</span>
-            </div>
-            <span className="text-white font-bold text-xl">CONSO</span>
+            <Image
+              src="/images/icons/text-logo.svg"
+              alt="CONSO Logo"
+              width={120}
+              height={32}
+              className="w-auto h-auto"
+            />
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a
               href="#"
-              className="text-white/90 hover:text-white transition text-sm"
+              style={{
+                fontFamily: "Inter",
+                fontWeight: 500,
+                fontSize: "16px",
+                lineHeight: "100%",
+                letterSpacing: "-1%",
+                color: "rgba(254, 254, 255, 1)",
+              }}
+              className={`${inter.className} hover:opacity-80 transition`}
             >
-              Features
+              Zapboard
             </a>
-            <a
-              href="#"
-              className="text-white/90 hover:text-white transition text-sm"
+            <div className="relative">
+              <div
+                style={{
+                  width: "30px",
+                  height: "13px",
+                  borderRadius: "8px",
+                  background: "rgba(222, 222, 222, 1)",
+                  position: "absolute",
+                  top: "-10px",
+                  left: "80%",
+                  transform: "translateX(-50%)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "8px",
+                    lineHeight: "100%",
+                    letterSpacing: "-1%",
+                    color: "rgba(0, 0, 0, 1)",
+                  }}
+                  className={inter.className}
+                >
+                  Soon
+                </span>
+              </div>
+              <a
+                href="#"
+                style={{
+                  fontFamily: "Inter",
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  lineHeight: "100%",
+                  letterSpacing: "-1%",
+                  color: "rgba(254, 254, 255, 1)",
+                }}
+                className={`${inter.className} hover:opacity-80 transition`}
+              >
+                Smart campaigns
+              </a>
+            </div>
+            <button
+              style={{
+                background: "rgba(122, 168, 254, 1)",
+                border: "1px solid rgba(168, 198, 255, 1)",
+                boxShadow: "2px 2px 0px 0px rgba(236, 243, 255, 1)",
+                borderRadius: "8px",
+                fontFamily: "Solway",
+                fontWeight: 500,
+                fontSize: "18px",
+                lineHeight: "100%",
+                letterSpacing: "-1%",
+                color: "rgba(254, 254, 255, 1)",
+                padding: "8px 16px",
+              }}
+              className={solway.className}
             >
-              Smart Campaign
-            </a>
-            <a
-              href="#"
-              className="text-white/90 hover:text-white transition text-sm"
-            >
-              Blog
-            </a>
-            <a
-              href="#"
-              className="text-white/90 hover:text-white transition text-sm"
-            >
-              API
-            </a>
+              Go to app
+            </button>
           </div>
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6 rounded-full">
-            Login
-          </Button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-[600px] bg-gradient-to-b from-sky-200 to-sky-100 overflow-hidden pt-20">
+      <section
+        className="relative min-h-[1000px] overflow-hidden pt-20"
+        style={{
+          backgroundImage: "url(/images/svgs/landingpage/bg.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         {/* Background decorative elements */}
-        <div className="absolute inset-0">
-          {/* Clouds */}
-          <div className="absolute top-20 left-10 w-32 h-16 bg-white rounded-full opacity-80"></div>
-          <div className="absolute top-24 left-20 w-24 h-12 bg-white rounded-full opacity-70"></div>
-          <div className="absolute top-16 right-32 w-40 h-20 bg-white rounded-full opacity-75"></div>
-          <div className="absolute top-20 right-40 w-28 h-14 bg-white rounded-full opacity-65"></div>
-
-          {/* Mountains */}
-          <div className="absolute bottom-32 left-0 w-0 h-0 border-l-[150px] border-l-transparent border-r-[150px] border-r-transparent border-b-[200px] border-b-[#5a8bb8] opacity-40"></div>
-          <div className="absolute bottom-32 left-20 w-0 h-0 border-l-[120px] border-l-transparent border-r-[120px] border-r-transparent border-b-[160px] border-b-[#7aa8cf] opacity-50"></div>
-          <div className="absolute bottom-32 right-0 w-0 h-0 border-l-[180px] border-l-transparent border-r-[180px] border-r-transparent border-b-[220px] border-b-[#6b9dc3] opacity-45"></div>
-
-          {/* Snowman */}
-          <div className="absolute bottom-36 left-16">
-            <div className="relative">
-              <div className="w-16 h-16 bg-white rounded-full border-2 border-gray-200"></div>
-              <div className="w-12 h-12 bg-white rounded-full border-2 border-gray-200 absolute -top-10 left-2"></div>
-              <div className="w-2 h-2 bg-black rounded-full absolute -top-8 left-5"></div>
-              <div className="w-2 h-2 bg-black rounded-full absolute -top-8 left-9"></div>
-              <div className="w-4 h-1 bg-orange-500 absolute -top-6 left-6"></div>
-            </div>
-          </div>
-
-          {/* Tree */}
-          <div className="absolute bottom-40 left-2">
-            <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[60px] border-b-[#2d5a3d]"></div>
-            <div className="w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[70px] border-b-[#1f4029] absolute -top-10 -left-1.5"></div>
-            <div className="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[80px] border-b-[#234a31] absolute -top-16 -left-2.5"></div>
-          </div>
+        {/* Tree on the left */}
+        <div className="absolute left-0 bottom-36 z-0">
+          <Image
+            src="/images/svgs/landingpage/tree-left.svg"
+            alt="Tree decoration"
+            width={250}
+            height={300}
+            className="w-auto h-auto"
+          />
         </div>
 
-        {/* Social Icons Floating */}
-        <div
-          className="absolute top-40 right-[20%] w-12 h-12 bg-[#1e3a5f] rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "0s" }}
-        >
-          <span className="text-white text-xl">💬</span>
-        </div>
-        <div
-          className="absolute top-60 right-[35%] w-10 h-10 bg-[#0088cc] rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "0.2s" }}
-        >
-          <span className="text-white text-lg">✈️</span>
-        </div>
-        <div
-          className="absolute top-52 right-[25%] w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "0.4s" }}
-        >
-          <span className="text-white text-lg">🌐</span>
-        </div>
-        <div
-          className="absolute top-48 right-[45%] w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "0.6s" }}
-        >
-          <span className="text-white text-xl">🎮</span>
-        </div>
-        <div
-          className="absolute top-56 right-[15%] w-10 h-10 bg-red-500 rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "0.8s" }}
-        >
-          <span className="text-white text-lg">▶️</span>
-        </div>
-        <div
-          className="absolute top-64 right-[55%] w-11 h-11 bg-green-500 rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "1s" }}
-        >
-          <span className="text-white text-lg">💬</span>
-        </div>
-        <div
-          className="absolute top-60 right-[10%] w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center shadow-lg animate-bounce"
-          style={{ animationDelay: "1.2s" }}
-        >
-          <span className="text-white text-xl">🔗</span>
+        {/* Main screen on the right */}
+        <div className="absolute right-16 bottom-36 z-0">
+          <Image
+            src="/images/svgs/landingpage/main-screen.svg"
+            alt="Main screen illustration"
+            width={400}
+            height={300}
+            className="w-auto h-auto"
+          />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-6 pt-24 pb-16 text-center">
-          <HeadingText text="Consumer Info-Fi Layer" className="text-7xl" />
+        <div className="relative z-10 container mx-auto px-6 pt-20 pb-16 text-center">
+          <h1
+            style={{
+              fontFamily: "Solway",
+              fontWeight: 700,
+              fontSize: "64px",
+              lineHeight: "100%",
+              letterSpacing: "0%",
+              textAlign: "center",
+              color: "rgba(255, 255, 255, 1)",
+              WebkitTextStroke: "1px rgba(0, 0, 0, 1)",
+              textShadow: "4px 4px 0px rgba(22, 63, 110, 1)",
+              paddingBottom: "16px",
+            }}
+            className={solway.className}
+          >
+            Consumer Info-Fi Layer
+          </h1>
 
-          <Text
-            text="Consumer info-fi simplifies to get started. Extra layer of bits nails Sats more blah Lorem Ispum bananas blubboon blah"
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8"
-          />
+          <p
+            style={{
+              fontFamily: "Inter",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              letterSpacing: "-1%",
+              textAlign: "center",
+            }}
+            className={`${inter.className} text-gray-600 max-w-3xl mx-auto mb-8`}
+          >
+            A unified 5D Consumer Passport from your social, gaming, creative,
+            and on-chain activity. Earn ZAPs, own your footprint, and unlock
+            smarter campaigns.
+          </p>
           <div className="flex items-center justify-center gap-4">
-            <Button
-              variant="outline"
-              className="bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-6 text-lg rounded-lg shadow-sm"
+            <button
+              style={{
+                background: "rgba(225, 225, 225, 1)",
+                border: "1px solid rgba(0, 56, 85, 1)",
+                borderRadius: "14px",
+                fontFamily: "Solway",
+                fontWeight: 500,
+                fontSize: "24px",
+                lineHeight: "100%",
+                letterSpacing: "-1%",
+                color: "rgba(29, 32, 96, 1)",
+                padding: "12px 32px",
+              }}
+              className={solway.className}
             >
               Get Started
-            </Button>
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-lg shadow-lg">
-              Run your plugsign
-            </Button>
+            </button>
+            <button
+              style={{
+                background: "rgba(122, 168, 254, 1)",
+                border: "1px solid rgba(26, 35, 52, 1)",
+                boxShadow: "4px 4px 0px 0px rgba(55, 110, 174, 1)",
+                borderRadius: "16px",
+                fontFamily: "Solway",
+                fontWeight: 500,
+                fontSize: "24px",
+                lineHeight: "100%",
+                letterSpacing: "-1%",
+                color: "rgba(254, 254, 255, 1)",
+                padding: "12px 32px",
+              }}
+              className={solway.className}
+            >
+              Mint your Passport
+            </button>
           </div>
-        </div>
-
-        {/* Wave divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            className="w-full h-16"
-          >
-            <path
-              d="M0,60 C300,90 600,30 900,60 C1050,75 1200,60 1200,60 L1200,120 L0,120 Z"
-              fill="white"
-              opacity="0.8"
-            ></path>
-            <path
-              d="M0,70 C300,100 600,40 900,70 C1050,85 1200,70 1200,70 L1200,120 L0,120 Z"
-              fill="white"
-              opacity="0.6"
-            ></path>
-            <path
-              d="M0,80 C300,110 600,50 900,80 C1050,95 1200,80 1200,80 L1200,120 L0,120 Z"
-              fill="white"
-            ></path>
-          </svg>
         </div>
       </section>
 
+      {/* Main Bottom Divider */}
+      <div className="relative left-0 right-0 z-20 -mt-24 -mb-30">
+        <Image
+          src="/images/svgs/landingpage/main-bottom.svg"
+          alt="Main bottom divider"
+          width={1200}
+          height={180}
+          className="w-full h-auto block"
+        />
+      </div>
+
       {/* Data Ownership & Monetization Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+      <section
+        className="py-30 relative"
+        style={{
+          backgroundImage: "url(/images/svgs/landingpage/bg-2.svg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-[#1e3a5f] mb-16">
-            Data Ownership & Monetization
+          <h2
+            className={`${solway.className} text-center mb-16`}
+            style={{
+              fontWeight: 800,
+              fontSize: "42px",
+              lineHeight: "90px",
+              letterSpacing: "-2%",
+              color: "rgba(255, 255, 255, 1)",
+              textShadow:
+                "1px 1px 0px rgba(19, 19, 19, 1), 2px 2px 0px rgba(19, 19, 19, 1), 3px 3px 0px rgba(19, 19, 19, 1), 4px 4px 0px rgba(19, 19, 19, 1)",
+              WebkitTextStroke: "1px rgba(19, 19, 19, 1)",
+            }}
+          >
+            Data Ownership & Monetisation
           </h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div
+            className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
+            style={{ gap: "64px" }}
+          >
             {/* Consumer Graph */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-200 to-red-300 rounded-2xl transform rotate-1 group-hover:rotate-2 transition-transform"></div>
-              <div className="relative bg-gradient-to-br from-red-100 to-red-200 rounded-2xl p-6 border-4 border-red-300 hover:shadow-2xl transition-shadow">
-                <div className="bg-gray-200 rounded-lg h-40 mb-4"></div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              {/* Cloud decoration */}
+              <div className="absolute -top-15 left-4 z-10">
+                <Image
+                  src="/images/svgs/landingpage/cloud.svg"
+                  alt="Cloud decoration"
+                  width={500}
+                  height={180}
+                  className="w-[450px]"
+                />
+              </div>
+              <div
+                className="relative rounded-2xl p-6 hover:shadow-2xl transition-shadow flex flex-col h-86"
+                style={{
+                  background: "rgba(203, 225, 237, 1)",
+                  border: "2.07px solid rgba(0, 0, 0, 1)",
+                  boxShadow: "6.9px 6.9px 0px 0px rgba(0, 0, 0, 1)",
+                }}
+              >
+                <div
+                  className="bg-white rounded-2xl mb-4 flex items-center justify-center"
+                  style={{
+                    width: "423.34px",
+                    height: "218.85px",
+                    border: "2.21px solid rgba(0, 0, 0, 1)",
+                    borderRadius: "16px",
+                  }}
+                >
+                  <Image
+                    src="/images/svgs/landingpage/card-1.svg"
+                    alt="Consumer Graph"
+                    width={150}
+                    height={100}
+                    className="object-contain"
+                  />
+                </div>
+                <h3
+                  className={`${solway.className} text-gray-800 mb-2`}
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "32px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Consumer Graph
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p
+                  className={`${inter.className} text-[rgba(97,97,97,1)]`}
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                   do eiusmod tempor incididunt.
                 </p>
@@ -202,13 +333,51 @@ export default function Home() {
 
             {/* Smart Campaigns */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-blue-300 rounded-2xl transform rotate-1 group-hover:rotate-2 transition-transform"></div>
-              <div className="relative bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-6 border-4 border-blue-300 hover:shadow-2xl transition-shadow">
-                <div className="bg-gray-200 rounded-lg h-40 mb-4"></div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              <div
+                className="relative rounded-2xl p-6 hover:shadow-2xl transition-shadow flex flex-col h-86"
+                style={{
+                  background: "rgba(255, 204, 204, 1)",
+                  border: "2.07px solid rgba(0, 0, 0, 1)",
+                  boxShadow: "6.9px 6.9px 0px 0px rgba(0, 0, 0, 1)",
+                }}
+              >
+                <div
+                  className="bg-white rounded-2xl mb-4 flex items-center justify-center"
+                  style={{
+                    width: "423.34px",
+                    height: "218.85px",
+                    border: "2.21px solid rgba(0, 0, 0, 1)",
+                    borderRadius: "16px",
+                  }}
+                >
+                  <Image
+                    src="/images/svgs/landingpage/card-2.svg"
+                    alt="Smart Campaigns"
+                    width={150}
+                    height={100}
+                    className="object-contain"
+                  />
+                </div>
+                <h3
+                  className={`${solway.className} text-gray-800 mb-2`}
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "32px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Smart Campaigns
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p
+                  className={`${inter.className} text-[rgba(97,97,97,1)]`}
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                   do eiusmod tempor incididunt.
                 </p>
@@ -217,13 +386,58 @@ export default function Home() {
 
             {/* Decentralized Storage */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-2xl transform rotate-1 group-hover:rotate-2 transition-transform"></div>
-              <div className="relative bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-2xl p-6 border-4 border-yellow-300 hover:shadow-2xl transition-shadow">
-                <div className="bg-gray-200 rounded-lg h-40 mb-4"></div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              <div
+                className="relative rounded-2xl p-6 hover:shadow-2xl transition-shadow flex flex-col h-86"
+                style={{
+                  background: "rgba(255, 223, 177, 1)",
+                  border: "2.07px solid rgba(0, 0, 0, 1)",
+                  boxShadow: "6.9px 6.9px 0px 0px rgba(0, 0, 0, 1)",
+                }}
+              >
+                <div
+                  className="bg-white rounded-2xl mb-4 flex items-center justify-center relative"
+                  style={{
+                    width: "423.34px",
+                    height: "218.85px",
+                    border: "2.21px solid rgba(0, 0, 0, 1)",
+                    borderRadius: "16px",
+                  }}
+                >
+                  <Image
+                    src="/images/svgs/landingpage/card-3bg.svg"
+                    alt="Decentralized Storage Background"
+                    width={300}
+                    height={150}
+                    className="object-contain absolute"
+                  />
+                  <Image
+                    src="/images/svgs/landingpage/card-3.svg"
+                    alt="Decentralized Storage"
+                    width={150}
+                    height={100}
+                    className="object-contain relative z-10"
+                  />
+                </div>
+                <h3
+                  className={`${solway.className} text-gray-800 mb-2`}
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "32px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Decentralized Storage
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p
+                  className={`${inter.className} text-[rgba(97,97,97,1)]`}
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                   do eiusmod tempor incididunt.
                 </p>
@@ -232,13 +446,61 @@ export default function Home() {
 
             {/* Developer API */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-200 to-purple-300 rounded-2xl transform rotate-1 group-hover:rotate-2 transition-transform"></div>
-              <div className="relative bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl p-6 border-4 border-purple-300 hover:shadow-2xl transition-shadow">
-                <div className="bg-gray-200 rounded-lg h-40 mb-4"></div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              {/* Cloud decoration */}
+              <div className="absolute -top-15 right-4 z-10">
+                <Image
+                  src="/images/svgs/landingpage/cloud.svg"
+                  alt="Cloud decoration"
+                  width={500}
+                  height={180}
+                  className="w-[450px]"
+                />
+              </div>
+              <div
+                className="relative rounded-2xl p-6 hover:shadow-2xl transition-shadow flex flex-col h-86"
+                style={{
+                  background: "rgba(204, 203, 255, 1)",
+                  border: "2.07px solid rgba(0, 0, 0, 1)",
+                  boxShadow: "6.9px 6.9px 0px 0px rgba(0, 0, 0, 1)",
+                }}
+              >
+                <div
+                  className="bg-white rounded-2xl mb-4 flex items-center justify-center"
+                  style={{
+                    width: "423.34px",
+                    height: "218.85px",
+                    border: "2.21px solid rgba(0, 0, 0, 1)",
+                    borderRadius: "16px",
+                  }}
+                >
+                  <Image
+                    src="/images/svgs/landingpage/card-4.svg"
+                    alt="Developer API"
+                    width={150}
+                    height={100}
+                    className="object-contain"
+                  />
+                </div>
+                <h3
+                  className={`${solway.className} text-gray-800 mb-2`}
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "32px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Developer API
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p
+                  className={`${inter.className} text-[rgba(97,97,97,1)]`}
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                  }}
+                >
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                   do eiusmod tempor incididunt.
                 </p>
@@ -248,54 +510,108 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Icicles Divider */}
-      <div className="relative h-16 bg-blue-50">
-        <div className="absolute top-0 left-0 right-0 flex justify-around">
-          {[...Array(20)].map((_, i) => {
-            const height = 20 + (i % 5) * 8;
-            const translateY = (i % 3) * 3;
-            return (
-              <div
-                key={i}
-                className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[40px] border-t-blue-100 opacity-70"
-                style={{
-                  height: `${height}px`,
-                  transform: `translateY(-${translateY}px)`,
-                }}
-              ></div>
-            );
-          })}
-        </div>
+      {/* Bottom Divider */}
+      <div className="relative -mt-19 z-20">
+        <Image
+          src="/images/svgs/landingpage/bottom-1.svg"
+          alt="Bottom divider"
+          width={1200}
+          height={120}
+          className="w-full h-auto"
+        />
       </div>
 
       {/* Proof of Persona Section */}
-      <section className="py-20 bg-gradient-to-b from-orange-100 to-orange-50">
+      <section className="-mt-36 pt-48 pb-32 bg-gradient-to-b from-orange-100 to-orange-50">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
             <div className="relative">
               {/* Layered card effect */}
-              <div className="absolute inset-0 bg-blue-400 rounded-2xl transform translate-x-4 translate-y-4"></div>
-              <div className="absolute inset-0 bg-blue-500 rounded-2xl transform translate-x-2 translate-y-2"></div>
-              <div className="relative bg-gradient-to-br from-blue-100 to-purple-200 rounded-2xl p-12 border-4 border-blue-600 shadow-2xl">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div className="bg-gray-200 rounded-lg h-64"></div>
+              <div
+                className="absolute inset-0 rounded-2xl transform translate-x-4 translate-y-4"
+                style={{
+                  background: "rgba(108, 91, 194, 1)",
+                  border: "3px solid rgba(19, 19, 19, 1)",
+                }}
+              ></div>
+              <div
+                className="absolute inset-0 rounded-2xl transform translate-x-2 translate-y-2"
+                style={{
+                  background: "rgba(175, 162, 248, 1)",
+                  border: "3px solid rgba(19, 19, 19, 1)",
+                }}
+              ></div>
+              <div
+                className="relative rounded-2xl p-16 shadow-2xl min-h-[500px]"
+                style={{
+                  background: "rgba(208, 208, 255, 1)",
+                  border: "3px solid rgba(19, 19, 19, 1)",
+                }}
+              >
+                <div className="grid md:grid-cols-2 gap-8 items-center h-full">
+                  <div
+                    className="rounded-lg h-96 flex items-center justify-center"
+                    style={{
+                      background: "rgba(208, 228, 239, 1)",
+                      border: "3px solid rgba(19, 19, 19, 1)",
+                    }}
+                  >
+                    <Image
+                      src="/images/svgs/landingpage/persona.svg"
+                      alt="Persona illustration"
+                      width={280}
+                      height={280}
+                      className="w-auto h-auto max-w-full max-h-full"
+                    />
+                  </div>
                   <div>
-                    <h2 className="text-4xl font-bold text-gray-800 mb-6 uppercase tracking-wider">
-                      PROOF OF
-                      <br />
-                      PERSONA
+                    <h2
+                      className="mb-6 uppercase"
+                      style={{
+                        fontFamily: "Solway",
+                        fontWeight: 800,
+                        fontSize: "28px",
+                        lineHeight: "40px",
+                        letterSpacing: "-1%",
+                        color: "rgba(255, 255, 255, 1)",
+                        textShadow:
+                          "1px 1px 0px rgba(19, 19, 19, 1), 2px 2px 0px rgba(19, 19, 19, 1), 3px 3px 0px rgba(19, 19, 19, 1), 4px 4px 0px rgba(19, 19, 19, 1)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      PROOF OF CREATOR
                     </h2>
-                    <p className="text-gray-700 leading-relaxed mb-4">
-                      Decentrally store encrypted bundles of various online
-                      unique person identities. The data can be shared only once
-                      it will allow verification without personal info except it
-                      when users want to share.
+                    <p
+                      className="mb-6"
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "26px",
+                        letterSpacing: "-1%",
+                        color: "rgba(109, 109, 109, 1)",
+                      }}
+                    >
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                      sed diam nonummy nibh euismod tincidunt ut laoreet dolore
                     </p>
-                    <p className="text-gray-700 leading-relaxed">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
+                    <button
+                      className="px-6 py-3"
+                      style={{
+                        background: "rgba(251, 231, 244, 1)",
+                        border: "2px solid rgba(19, 19, 19, 1)",
+                        boxShadow: "4px 4px 0px 0px rgba(78, 64, 147, 1)",
+                        borderRadius: "14px",
+                        fontFamily: "Solway",
+                        fontWeight: 500,
+                        fontSize: "24px",
+                        lineHeight: "100%",
+                        letterSpacing: "-1%",
+                        color: "rgba(14, 32, 58, 1)",
+                      }}
+                    >
+                      Get Started
+                    </button>
                   </div>
                 </div>
               </div>
@@ -305,23 +621,73 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gradient-to-b from-blue-100 to-blue-50">
+      <section
+        className="py-20 bg-gradient-to-b from-blue-100 to-blue-50"
+        style={{
+          borderTop: "1px solid rgba(0, 0, 0, 1)",
+          borderBottom: "1px solid rgba(0, 0, 0, 1)",
+        }}
+      >
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto">
             <div className="relative">
               {/* Layered card effect */}
-              <div className="absolute inset-0 bg-red-300 rounded-2xl transform translate-x-4 translate-y-4"></div>
-              <div className="absolute inset-0 bg-red-400 rounded-2xl transform translate-x-2 translate-y-2"></div>
-              <div className="relative bg-gradient-to-br from-pink-100 to-red-200 rounded-2xl p-8 border-4 border-red-400 shadow-2xl">
-                <h2 className="text-4xl font-bold text-gray-800 mb-8 uppercase tracking-wider">
+              <div
+                className="absolute inset-0 rounded-2xl transform translate-x-4 translate-y-4"
+                style={{
+                  background: "rgba(234, 135, 135, 1)",
+                  border: "3px solid rgba(19, 19, 19, 1)",
+                }}
+              ></div>
+              <div
+                className="absolute inset-0 rounded-2xl transform translate-x-2 translate-y-2"
+                style={{
+                  background: "rgba(236, 158, 158, 1)",
+                  border: "3px solid rgba(19, 19, 19, 1)",
+                }}
+              ></div>
+              <div
+                className="relative rounded-2xl p-8 shadow-2xl"
+                style={{
+                  background: "rgba(255, 204, 204, 1)",
+                  border: "3px solid rgba(19, 19, 19, 1)",
+                }}
+              >
+                <h2
+                  className="mb-8 uppercase tracking-wider"
+                  style={{
+                    fontFamily: "Solway",
+                    fontWeight: 800,
+                    fontSize: "48px",
+                    lineHeight: "52px",
+                    letterSpacing: "-1%",
+                    color: "rgba(255, 255, 255, 1)",
+                    WebkitTextStroke: "1px rgba(0, 0, 0, 1)",
+                    textShadow: "4px 4px 0px rgba(19, 19, 19, 1)",
+                  }}
+                >
                   FAQ
                 </h2>
                 <Accordion type="single" collapsible className="space-y-4">
                   <AccordionItem
                     value="item-1"
-                    className="bg-white/50 rounded-lg border-2 border-gray-300 px-4"
+                    className="rounded-lg px-4"
+                    style={{
+                      background: "rgba(255, 255, 255, 1)",
+                      border: "3px solid rgba(0, 0, 0, 1)",
+                      boxShadow: "4px 4px 0px 0px rgba(205, 143, 143, 1)",
+                    }}
                   >
-                    <AccordionTrigger className="text-left font-semibold text-gray-800 hover:no-underline">
+                    <AccordionTrigger
+                      className="text-left hover:no-underline"
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: 500,
+                        fontSize: "20px",
+                        lineHeight: "100%",
+                        letterSpacing: "0%",
+                      }}
+                    >
                       What is CONSO?
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-700">
@@ -332,9 +698,23 @@ export default function Home() {
 
                   <AccordionItem
                     value="item-2"
-                    className="bg-white/50 rounded-lg border-2 border-gray-300 px-4"
+                    className="rounded-lg px-4"
+                    style={{
+                      background: "rgba(255, 255, 255, 1)",
+                      border: "3px solid rgba(0, 0, 0, 1)",
+                      boxShadow: "4px 4px 0px 0px rgba(205, 143, 143, 1)",
+                    }}
                   >
-                    <AccordionTrigger className="text-left font-semibold text-gray-800 hover:no-underline">
+                    <AccordionTrigger
+                      className="text-left hover:no-underline"
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: 500,
+                        fontSize: "20px",
+                        lineHeight: "100%",
+                        letterSpacing: "0%",
+                      }}
+                    >
                       What Problems does it Solve
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-700">
@@ -346,9 +726,23 @@ export default function Home() {
 
                   <AccordionItem
                     value="item-3"
-                    className="bg-white/50 rounded-lg border-2 border-gray-300 px-4"
+                    className="rounded-lg px-4"
+                    style={{
+                      background: "rgba(255, 255, 255, 1)",
+                      border: "3px solid rgba(0, 0, 0, 1)",
+                      boxShadow: "4px 4px 0px 0px rgba(205, 143, 143, 1)",
+                    }}
                   >
-                    <AccordionTrigger className="text-left font-semibold text-gray-800 hover:no-underline">
+                    <AccordionTrigger
+                      className="text-left hover:no-underline"
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: 500,
+                        fontSize: "20px",
+                        lineHeight: "100%",
+                        letterSpacing: "0%",
+                      }}
+                    >
                       Who can I integrate?
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-700">
@@ -359,9 +753,23 @@ export default function Home() {
 
                   <AccordionItem
                     value="item-4"
-                    className="bg-white/50 rounded-lg border-2 border-gray-300 px-4"
+                    className="rounded-lg px-4"
+                    style={{
+                      background: "rgba(255, 255, 255, 1)",
+                      border: "3px solid rgba(0, 0, 0, 1)",
+                      boxShadow: "4px 4px 0px 0px rgba(205, 143, 143, 1)",
+                    }}
                   >
-                    <AccordionTrigger className="text-left font-semibold text-gray-800 hover:no-underline">
+                    <AccordionTrigger
+                      className="text-left hover:no-underline"
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: 500,
+                        fontSize: "20px",
+                        lineHeight: "100%",
+                        letterSpacing: "0%",
+                      }}
+                    >
                       What are Smart Campaigns?
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-700">
@@ -378,83 +786,191 @@ export default function Home() {
       </section>
 
       {/* Backers & Partners Section */}
-      <section className="py-16 bg-gradient-to-b from-pink-50 to-white">
+      <section
+        className="py-16"
+        style={{
+          background: "rgba(251, 231, 244, 1)",
+          borderBottom: "1px solid rgba(0, 0, 0, 1)",
+        }}
+      >
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-[#1e3a5f] mb-12">
+          <h2
+            className="text-center mb-12"
+            style={{
+              fontFamily: "Solway",
+              fontWeight: 800,
+              fontSize: "48px",
+              lineHeight: "52px",
+              letterSpacing: "-1%",
+              color: "rgba(255, 255, 255, 1)",
+              WebkitTextStroke: "1px rgba(0, 0, 0, 1)",
+              textShadow: "4px 4px 0px rgba(19, 19, 19, 1)",
+            }}
+          >
             Our Backers & Partners
           </h2>
-          <div className="flex items-center justify-center gap-12 flex-wrap">
-            <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border-2 border-blue-200 shadow-sm">
-              <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-              <span className="font-bold text-gray-800">WALRUS</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border-2 border-blue-200 shadow-sm">
-              <div className="w-8 h-8 bg-blue-600 rounded-full"></div>
-              <span className="font-bold text-gray-800">vana</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border-2 border-green-200 shadow-sm">
-              <div className="w-8 h-8 bg-green-500 rounded-full"></div>
-              <span className="font-bold text-gray-800">HoloHive</span>
+          <div className="flex items-center justify-center">
+            <div
+              className="flex items-center justify-center"
+              style={{
+                width: "246.45px",
+                height: "78.12px",
+                border: "1.53px solid rgba(19, 19, 19, 1)",
+                borderRadius: "12px",
+                background: "white",
+                opacity: 1,
+              }}
+            >
+              <Image
+                src="/images/svgs/landingpage/walrus.svg"
+                alt="Walrus"
+                width={200}
+                height={60}
+                className="w-auto h-auto max-w-full max-h-full"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1e3a5f] text-white py-12">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      <footer className="bg-[#1e3a5f] text-white py-6">
+        <div className="container mx-auto px-2">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
-                <span className="text-[#1e3a5f] font-bold">C</span>
-              </div>
-              <span className="font-bold text-2xl">CONSO</span>
+              <Image
+                src="/images/icons/text-logo.svg"
+                alt="CONSO"
+                width={180}
+                height={48}
+              />
             </div>
+
             <div className="flex items-center gap-8">
               <a
                 href="#"
-                className="text-white/80 hover:text-white transition text-sm"
+                className="hover:text-white transition"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  lineHeight: "26.67px",
+                  letterSpacing: "0px",
+                  color: "rgba(169, 169, 169, 1)",
+                }}
               >
-                About & Investors
+                Terms & Conditions
               </a>
               <a
                 href="#"
-                className="text-white/80 hover:text-white transition text-sm"
+                className="hover:text-white transition"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  lineHeight: "26.67px",
+                  letterSpacing: "0px",
+                  color: "rgba(169, 169, 169, 1)",
+                }}
               >
-                Blog
+                Docs
               </a>
               <a
                 href="#"
-                className="text-white/80 hover:text-white transition text-sm"
+                className="hover:text-white transition"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  lineHeight: "26.67px",
+                  letterSpacing: "0px",
+                  color: "rgba(169, 169, 169, 1)",
+                }}
               >
-                API
+                APIs
               </a>
               <a
                 href="#"
-                className="text-white/80 hover:text-white transition text-sm"
+                className="hover:text-white transition"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  lineHeight: "26.67px",
+                  letterSpacing: "0px",
+                  color: "rgba(169, 169, 169, 1)",
+                }}
               >
-                Contact us
+                Contact Us
               </a>
             </div>
-            <div className="flex items-center gap-4">
+
+            <div className="flex items-center gap-3">
               <a href="#" className="text-white/80 hover:text-white transition">
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-                </svg>
+                <Image
+                  src="/images/svgs/landingpage/x.svg"
+                  alt="X"
+                  width={30}
+                  height={30}
+                />
               </a>
               <a href="#" className="text-white/80 hover:text-white transition">
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
+                <Image
+                  src="/images/svgs/landingpage/telegram.svg"
+                  alt="Telegram"
+                  width={30}
+                  height={30}
+                />
+              </a>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between mt-4 pt-4 px-1">
+            <div
+              style={{
+                fontFamily: "Satoshi",
+                fontWeight: 400,
+                fontSize: "12px",
+                lineHeight: "23.11px",
+                letterSpacing: "0px",
+                color: "rgba(165, 165, 165, 1)",
+              }}
+            >
+              © Copyright 2024. All Rights Reserved.
+            </div>
+            <div
+              className="flex items-center gap-4"
+              style={{
+                textAlign: "right",
+              }}
+            >
+              <a
+                href="#"
+                className="hover:text-white transition"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 400,
+                  fontSize: "12px",
+                  lineHeight: "23.11px",
+                  letterSpacing: "0px",
+                  color: "rgba(165, 165, 165, 1)",
+                }}
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#"
+                className="hover:text-white transition"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 400,
+                  fontSize: "12px",
+                  lineHeight: "23.11px",
+                  letterSpacing: "0px",
+                  color: "rgba(165, 165, 165, 1)",
+                }}
+              >
+                Terms & Conditions
               </a>
             </div>
           </div>
